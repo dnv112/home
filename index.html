@@ -230,6 +230,7 @@ body{margin:0;background:#f3f6fb;color:var(--ink);font-family:"Be Vietnam Pro",u
 .room-thumb{width:84px!important;height:58px!important;flex:initial!important;border-radius:8px!important;background:linear-gradient(135deg,#e7d3b7,#f9f2e7 45%,#b7c8d3)!important;display:grid!important;place-items:center!important;overflow:hidden!important;position:relative!important;color:#fff!important}
 .room-thumb:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(24,54,91,.18))}
 .room-thumb span{font-size:30px;filter:drop-shadow(0 2px 2px #667788);z-index:1}
+.room-thumb img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;position:relative;z-index:0}.room-thumb-fallback{background:linear-gradient(145deg,#e3edf7,#f8ead2)!important}.room-thumb-fallback span{font-size:30px;z-index:1}
 .summary-head-title h2{font-size:15px!important;line-height:1.25!important;margin:3px 0 0!important;color:#143965!important;font-weight:800!important}
 .summary-head .pill{font-size:9px!important;padding:5px 9px!important;background:#e1f8eb!important;color:#168354!important;border:1px solid #c4efd7!important;white-space:nowrap!important;margin-top:0!important}
 #roomTitle{display:none!important}
@@ -409,46 +410,145 @@ code, pre, kbd, samp {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
 }
 </style>
+
+<style id="fix-summary-overview-font">
+/* Fix font rendering in the booking overview labels and values */
+#summaryArea .guest-overview,
+#summaryArea .guest-overview .overview-row,
+#summaryArea .guest-overview .overview-row > span,
+#summaryArea .guest-overview .overview-row > span > span,
+#summaryArea .guest-overview .overview-row > strong {
+  font-family: "Segoe UI", Arial, "Helvetica Neue", sans-serif !important;
+  font-style: normal !important;
+  font-variant: normal !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+#summaryArea .guest-overview .overview-row > span {
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+  white-space: normal !important;
+}
+#summaryArea .guest-overview .overview-row > span > span {
+  display: inline !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+}
+#summaryArea .guest-overview .overview-row > strong {
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+  font-weight: 700 !important;
+  min-width: 0 !important;
+  white-space: normal !important;
+  color: #173b68 !important;
+}
+@media (max-width: 760px) {
+  #summaryArea .guest-overview .overview-row > span,
+  #summaryArea .guest-overview .overview-row > span > span,
+  #summaryArea .guest-overview .overview-row > strong { font-size: 12px !important; }
+}
+</style>
+
+
+<style id="fix-overview-label-alignment-final">
+/* Khắc phục lỗi chữ/biểu tượng ở phần Tổng quan đặt phòng */
+#summaryArea .guest-overview .overview-row{
+  display:grid!important;
+  grid-template-columns:minmax(145px, .95fr) minmax(0,1.05fr)!important;
+  align-items:center!important;
+  column-gap:10px!important;
+  row-gap:3px!important;
+  padding:5px 0!important;
+  min-width:0!important;
+}
+#summaryArea .guest-overview .overview-label{
+  display:flex!important;align-items:center!important;gap:8px!important;
+  min-width:0!important;white-space:normal!important;
+  font-family:Arial,"Segoe UI",sans-serif!important;
+  font-size:12px!important;line-height:1.4!important;font-weight:500!important;
+  color:#34577f!important;letter-spacing:normal!important;
+}
+#summaryArea .guest-overview .overview-icon{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  width:21px!important;height:21px!important;flex:0 0 21px!important;
+  border-radius:6px!important;background:#e0ebf9!important;color:#245a96!important;
+  font-family:Arial,"Segoe UI Symbol",sans-serif!important;font-size:13px!important;
+  line-height:1!important;font-weight:700!important;white-space:nowrap!important;
+}
+#summaryArea .guest-overview .overview-label-text{
+  display:block!important;min-width:0!important;white-space:normal!important;
+  overflow-wrap:normal!important;word-break:normal!important;
+  font-size:12px!important;line-height:1.4!important;font-weight:500!important;
+}
+#summaryArea .guest-overview .overview-row>strong{
+  display:block!important;min-width:0!important;margin:0!important;padding:0!important;
+  font-family:Arial,"Segoe UI",sans-serif!important;font-size:12px!important;
+  line-height:1.4!important;font-weight:700!important;color:#173b68!important;
+  letter-spacing:normal!important;white-space:normal!important;
+  overflow-wrap:anywhere!important;word-break:normal!important;
+}
+@media(max-width:420px){
+ #summaryArea .guest-overview .overview-row{grid-template-columns:minmax(112px,.9fr) minmax(0,1.1fr)!important;column-gap:7px!important}
+ #summaryArea .guest-overview .overview-label,#summaryArea .guest-overview .overview-label-text,#summaryArea .guest-overview .overview-row>strong{font-size:11px!important}
+ #summaryArea .guest-overview .overview-icon{width:19px!important;height:19px!important;flex-basis:19px!important}
+}
+</style>
+
+
+<style id="promo-gift-icon">
+/* Biểu tượng quà tặng tại mục chọn khuyến mãi */
+.promo-label{display:flex!important;align-items:center;gap:7px;color:#a66a0b!important;font-size:inherit}
+.promo-label::first-letter{font-size:27px}
+</style>
+<style id="button-icons-style">
+.btn .button-icon{display:inline-block;margin-right:8px;font-size:1.4em;vertical-align:-2px;line-height:1}
+</style>
 </head>
 <body><main id="app"><div class="dashboard-shell">
 <aside class="sidebar">
-<a class="side-brand" href="#bookingArea"><span class="side-mark">⌂</span><strong>SUN HOMESTAY</strong><small>Nghỉ dưỡng · Trải nghiệm · Kết nối</small></a>
+<a class="side-brand" href="#bookingArea"><span class="side-mark" aria-label="Biểu tượng Sun Homestay"><svg viewBox="0 0 64 64" role="img" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 29 31 10 54 29"/><path d="M15 27v27h33V27"/><path d="M25 54V38h13v16"/><path d="M45 8V3M54 13l4-4M49 18l7 1M40 13l-3-5"/></g><path d="M22 31h7v7h-7zM36 31h7v7h-7z" fill="#8ec8ed" stroke="currentColor" stroke-width="1.5"/></svg></span><strong>SUN HOMESTAY</strong><small>Nghỉ dưỡng · Trải nghiệm · Kết nối</small></a>
 <nav aria-label="Điều hướng chính" class="side-nav">
-<a class="side-link active" href="#bookingArea"><span>▦</span> Đặt phòng</a>
-<a class="side-link" href="#summaryArea"><span>⌂</span> Tổng quan</a>
-<a class="side-link" href="#extensionArea"><span>◷</span> Gia hạn phòng</a>
-<a class="side-link" href="#paymentSection"><span>▣</span> Thanh toán</a>
-<a class="side-link" href="#paymentSection"><span>▦</span> Mã QR</a>
+<a class="side-link active" href="#bookingArea"><span><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17M8 13h2m4 0h2M8 17h2"/></svg></span> Đặt phòng</a>
+<a class="side-link" href="#summaryArea"><span><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7M5.5 9v11h13V9M9 20v-6h6v6"/></svg></span> Tổng quan</a>
+<a class="side-link" href="#extensionArea"><span><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span> Gia hạn phòng</a>
+<a class="side-link" href="#paymentSection"><span><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h15a2 2 0 0 1 2 2V19H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h13"/><path d="M3 7h15M15 12h6v4h-6a2 2 0 0 1 0-4Z"/><circle cx="16" cy="14" r=".5"/></svg></span> Thanh toán</a>
+<a class="side-link" href="#paymentSection"><span><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M5.5 5.5h2v2h-2zM16.5 5.5h2v2h-2zM5.5 16.5h2v2h-2zM14 14h3v3h-3zM19 14h2v2h-2zM19 19h2M14 19v2M17 18v3"/></svg></span> Mã QR</a>
 </nav>
 <div class="side-support"><span>HỖ TRỢ</span><p>ⓘ　Hướng dẫn sử dụng</p><p>☎　Liên hệ</p></div>
 <div class="side-motto"><b>Sun Homestay</b><span>Nơi lưu giữ<br/>những khoảnh khắc đẹp ♡</span></div>
 </aside>
 <div class="dashboard-main">
-<div class="hero-banner"><div class="hero-title"><strong>Sun Homestay</strong><span>Thoải mái như ở nhà</span></div><div aria-label="Ngày giờ hiện tại" class="hero-meta"><div class="hero-clock"><span class="clock-icon">▦</span><div><small>NGÀY THÁNG NĂM</small><strong id="heroDate">--/--/----</strong></div></div><div class="hero-clock"><span class="clock-icon">◷</span><div><small>GIỜ HIỆN TẠI</small><strong id="heroTime">--:--:--</strong></div></div></div></div>
+<div class="hero-banner"><div class="hero-title"><strong>Sun Homestay</strong><span>Thoải mái như ở nhà</span></div><div aria-label="Ngày giờ hiện tại" class="hero-meta"><div class="hero-clock"><span class="clock-icon"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17M8 13h2m4 0h2M8 17h2"/></svg></span><div><small>NGÀY THÁNG NĂM</small><strong id="heroDate">--/--/----</strong></div></div><div class="hero-clock"><span class="clock-icon"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><div><small>GIỜ HIỆN TẠI</small><strong id="heroTime">--:--:--</strong></div></div></div></div>
 <div class="wrap">
 <header class="brand"><div class="logo">SH</div><div><div class="eyebrow">SUN HOMESTAY · FRONT DESK</div><h1>Tính tiền Check-in / Check-out</h1><p class="sub">Nhập giờ nhận và trả phòng để xem tiền phòng dự kiến.</p></div></header>
 <div class="layout">
 <section class="panel booking-panel" id="bookingArea">
-<div class="panel-heading"><span class="heading-icon">▤</span><div><h2>Thông tin đặt phòng</h2><p class="panel-subtitle">Vui lòng điền đầy đủ thông tin khách và phòng</p></div></div><p class="hint">Chọn cơ sở, mã phòng và thời gian thực tế.</p>
-<div class="field"><label for="site">CƠ SỞ</label><select id="site"><option value="ndh">NĐH – Cầu Giấy · Số 60, ngõ 144 Nguyễn Đình Hoàn</option><option value="llq">LLQ – Tây Hồ · Số 16, hẻm 51/2, ngõ 89 Lạc Long Quân</option><option value="dc">Đội Cấn – Ba Đình · Số 10, ngách 222F, ngõ 260 Đội Cấn</option></select></div>
-<div class="two"><div class="field"><label for="room">MÃ PHÒNG</label><select id="room"></select></div><div class="field"><label for="type">HẠNG PHÒNG</label><input id="type" readonly=""/></div></div>
-<div class="two"><div class="field"><label for="checkin">CHECK-IN</label><input id="checkin" type="datetime-local"/></div><div class="field"><label for="checkout">CHECK-OUT</label><input id="checkout" type="datetime-local"/></div></div>
-<div class="two"><div class="field"><label for="customerName">TÊN KHÁCH HÀNG</label><input id="customerName" placeholder="Nhập tên khách hàng" type="text"/></div><div class="field"><label for="guestCount">SỐ LƯỢNG NGƯỜI Ở</label><input id="guestCount" min="1" placeholder="Nhập số người ở" step="1" type="number" value="2"/></div></div>
-<div class="field"><label>GIÁ KHUYẾN MÃI QUA ĐÊM ĐẾN 10:00 HÔM SAU</label><div class="promo-options"><label><input checked="" name="promoNight" type="radio" value="0"/> Không áp dụng</label><label><input name="promoNight" type="radio" value="300000"/> 300.000đ</label><label><input name="promoNight" type="radio" value="400000"/> 400.000đ</label></div><p class="note" style="margin-top:0">Gói 300.000đ / 400.000đ áp dụng từ giờ check-in đến mốc 10:00 kế tiếp (check-in trước 10:00: tính đến 10:00 cùng ngày; check-in từ 10:00 trở đi: tính đến 10:00 hôm sau). Phần còn lại sau mốc 10:00: dưới 6h tính 50.000đ/giờ; từ 6 đến dưới 12h tính giá qua đêm; từ 12 đến 24h tính giá ngày đêm. Ưu đãi theo ngày chỉ áp dụng cho phần qua đêm / ngày đêm, không giảm vào gói khuyến mãi.</p></div>
-<div class="field"><label for="manual">PHỤ THU / GIẢM TRỪ (VNĐ)</label><input id="manual" step="1000" type="number" value="0"/></div><div class="field"><label for="discount">ƯU ĐÃI THEO TỪNG NGÀY</label><input id="discount" readonly="" type="text" value="Tự động theo ngày"/></div>
+<div class="panel-heading"><span class="heading-icon"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l5 5v13H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v6h5M8 13h7M8 17h7"/></svg></span><div><h2>Thông tin đặt phòng</h2><p class="panel-subtitle">Vui lòng điền đầy đủ thông tin khách và phòng</p></div></div><p class="hint">Chọn cơ sở, mã phòng và thời gian thực tế.</p>
+<div class="two"><div class="field"><label for="customerName">Tên Khách Hàng</label><input id="customerName" placeholder="Nhập tên khách hàng" type="text"/></div><div class="field"><label for="site">Cơ Sở</label><select id="site"><option value="ndh">NĐH – Cầu Giấy · Số 60, ngõ 144 Nguyễn Đình Hoàn</option><option value="llq">LLQ – Tây Hồ · Số 16, hẻm 51/2, ngõ 89 Lạc Long Quân</option><option value="dc">Đội Cấn – Ba Đình · Số 10, ngách 222F, ngõ 260 Đội Cấn</option></select></div></div>
+<div class="two"><div class="field"><label for="room">Mã Phòng</label><select id="room"></select></div><div class="field"><label for="type">Hạng Phòng</label><input id="type" readonly=""/></div></div>
+<div class="two"><div class="field"><label for="checkin">Giờ Check-in</label><input id="checkin" type="datetime-local"/></div><div class="field"><label for="checkout">Giờ Check-out</label><input id="checkout" type="datetime-local"/></div></div>
+<div class="two"><div class="field"><label for="guestCount">Số Khách</label><input id="guestCount" min="1" placeholder="Nhập số khách" step="1" type="number" value="2"/></div><div class="field"><label for="manual">Phụ Thu / Giảm Trừ (VNĐ)</label><input id="manual" step="1000" type="number" value="0"/></div></div>
+<div class="field"><label class="promo-label">🎁 Chọn Khuyến Mãi</label><div class="promo-options"><label><input checked="" name="promoNight" type="radio" value="0"/> Không áp dụng</label><label><input name="promoNight" type="radio" value="300000"/> 300.000đ</label><label><input name="promoNight" type="radio" value="400000"/> 400.000đ</label></div><p class="note" style="margin-top:0">Gói 300.000đ / 400.000đ áp dụng từ giờ check-in đến mốc 10:00 kế tiếp (check-in trước 10:00: tính đến 10:00 cùng ngày; check-in từ 10:00 trở đi: tính đến 10:00 hôm sau). Phần còn lại sau mốc 10:00: dưới 6h tính 50.000đ/giờ; từ 6 đến dưới 12h tính giá qua đêm; từ 12 đến 24h tính giá ngày đêm. Ưu đãi theo ngày chỉ áp dụng cho phần qua đêm / ngày đêm, không giảm vào gói khuyến mãi.</p></div>
+<div class="field"><label for="discount">ƯU ĐÃI THEO TỪNG NGÀY</label><input id="discount" readonly="" type="text" value="Tự động theo ngày"/></div>
 <div class="btnrow"><button class="btn" id="calc">Tính tiền phòng</button><button class="btn secondary" id="reset">Làm mới</button></div><div aria-live="polite" class="status" id="status"></div>
-<p class="note">Ưu đãi tự động: Thứ 2–5: 15%, Thứ 6–7: 5%, Chủ Nhật: 10%. Với gói khuyến mãi đến 10:00 kế tiếp, ưu đãi chỉ trừ vào phí thời gian còn lại được tính theo giá qua đêm / ngày đêm; không trừ vào giá gói. Có thể nhập phụ thu/giảm trừ âm dương theo thực tế.</p>
+<p class="note">Giá ngày đêm thông thường: ngày đầu tính 22 giờ; mỗi ngày tiếp theo tính 24 giờ; giờ dư tính 30.000đ/giờ (CS3: 50.000đ/giờ). Quy tắc này không áp dụng cho gói khuyến mãi qua đêm đến 10:00 hôm sau hoặc gia hạn thêm giờ. Ưu đãi tự động: Thứ 2–5: 15%, Thứ 6–7: 5%, Chủ Nhật: 10%. Với gói khuyến mãi đến 10:00 kế tiếp, ưu đãi chỉ trừ vào phí thời gian còn lại được tính theo giá qua đêm / ngày đêm; không trừ vào giá gói. Có thể nhập phụ thu/giảm trừ âm dương theo thực tế.</p>
 </section>
 <div class="summary-column">
 <section class="panel summary-panel" id="summaryArea">
-<div class="summary-head"><div aria-hidden="true" class="room-thumb"><span>🛏</span></div><div class="summary-head-title"><h2>Tổng quan đặt phòng <span aria-hidden="true" class="edit-mark">↗</span></h2><div class="room-title" id="roomTitle">Chưa chọn phòng</div></div><span class="pill" id="kindPill">Chờ nhập giờ</span></div>
+<div class="summary-head"><div class="room-thumb"><img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&amp;fit=crop&amp;w=420&amp;q=85" alt="Ảnh phòng homestay mẫu" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('room-thumb-fallback');this.parentElement.innerHTML='<span aria-hidden="true"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20V5M3 15h18v5M3 10h6a3 3 0 0 1 3 3v2M12 12h6a3 3 0 0 1 3 3v0M7 7h3v3H7z"/></svg></span>';"/></div><div class="summary-head-title"><h2>Tổng quan đặt phòng <span aria-hidden="true" class="edit-mark">↗</span></h2><div class="room-title" id="roomTitle">Chưa chọn phòng</div></div><span class="pill" id="kindPill">Chờ nhập giờ</span></div>
 <div class="guest-overview">
-<div class="overview-row"><span>♟ <span>Tên khách hàng</span></span><strong id="overviewCustomer">Chưa nhập</strong></div>
-<div class="overview-row"><span>▦ <span>Cơ sở</span></span><strong id="overviewSite">NĐH – Cầu Giấy</strong></div>
-<div class="overview-row"><span>▦ <span>Mã phòng</span></span><strong id="overviewRoom">—</strong></div>
-<div class="overview-row"><span>▰ <span>Hạng phòng</span></span><strong id="overviewType">—</strong></div>
+<div class="overview-row"><span class="overview-label"><span class="overview-icon" aria-hidden="true"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2Z"/></svg></span><span class="overview-label-text">Tên khách hàng</span></span><strong id="overviewCustomer">Chưa nhập</strong></div>
+<div class="overview-row"><span class="overview-label"><span class="overview-icon" aria-hidden="true"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V4h11v17M15 10h5v11M2 21h20M7 7h2m2 0h1M7 11h2m2 0h1M7 15h2m2 0h1M8 21v-3h3v3"/></svg></span><span class="overview-label-text">Cơ sở</span></span><strong id="overviewSite">NĐH – Cầu Giấy</strong></div>
+<div class="overview-row"><span class="overview-label"><span class="overview-icon" aria-hidden="true"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20V5M3 15h18v5M3 10h6a3 3 0 0 1 3 3v2M12 12h6a3 3 0 0 1 3 3v0M7 7h3v3H7z"/></svg></span><span class="overview-label-text">Mã phòng</span></span><strong id="overviewRoom">—</strong></div>
+<div class="overview-row"><span class="overview-label"><span class="overview-icon" aria-hidden="true"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="overview-label-text">Hạng phòng</span></span><strong id="overviewType">—</strong></div>
 </div>
-<div class="stay-overview"><h3>▦ <span>Thời gian lưu trú</span></h3><div class="stay-times"><div><small>Check-in</small><strong id="overviewCheckin">Chưa chọn</strong></div><i></i><div><small>Check-out</small><strong id="overviewCheckout">Chưa chọn</strong></div><div class="actual-hours"><small>Số giờ thực tế</small><strong id="overviewActualHours">—</strong></div></div></div>
+<div class="stay-overview"><h3><span class="stay-icon"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17M8 13h2m4 0h2M8 17h2"/></svg></span><span>Thời gian lưu trú</span></h3><div class="stay-times"><div><small>Check-in</small><strong id="overviewCheckin">Chưa chọn</strong></div><i></i><div><small>Check-out</small><strong id="overviewCheckout">Chưa chọn</strong></div><div class="actual-hours"><small>Số giờ thực tế</small><strong id="overviewActualHours">—</strong></div></div></div>
 <div class="breakdown">
 <div class="line"><span>Loại thuê</span><strong id="kind">—</strong></div>
 <div class="line"><span>Đơn giá chính</span><strong id="base">—</strong></div>
@@ -458,21 +558,21 @@ code, pre, kbd, samp {
 <div class="line total"><span>THÀNH TIỀN</span><strong id="total">—</strong></div></div>
 </section><div class="resultTop payment-total-head"><div><div class="eyebrow">TỔNG THANH TOÁN DỰ KIẾN</div><div class="muted" id="duration">Nhập thời gian check-in và check-out.</div></div></div><div class="amount" id="grand">—</div><div class="stats"><div class="stat"><b id="hours">—</b><span>Giờ thực tế</span></div><div class="stat"><b id="nights">—</b><span>Ngày chênh lệch</span></div><div class="stat"><b id="perday">—</b><span>Giá ngày đêm</span></div></div><section class="panel rate-panel" id="ratePanel">
 <div class="section rate-section-visible">
-<h3>📋 Bảng giá cơ sở đang chọn</h3>
+<h3><span class="rates-icon"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l5 5v13H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v6h5M8 13h7M8 17h7"/></svg></span>Bảng giá cơ sở đang chọn</h3>
 <div class="rates" id="rates"></div>
 </div>
 </section><section class="panel qr-panel" id="qrPanel">
 <div class="section payment-section" id="paymentSection">
-<h3><span class="qr-heading-icon">▦</span><span>Thanh toán QR</span></h3>
+<h3><span class="qr-heading-icon"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M5.5 5.5h2v2h-2zM16.5 5.5h2v2h-2zM5.5 16.5h2v2h-2zM14 14h3v3h-3zM19 14h2v2h-2zM19 19h2M14 19v2M17 18v3"/></svg></span><span>Thanh toán QR</span></h3>
 <p class="qr-subtitle">Quét mã để chuyển khoản nhanh chóng</p>
 <p class="note">Mã QR được tạo tự động theo số tiền. Bấm nút tương ứng để tải ảnh QR về máy rồi gửi khách.</p>
 <p class="note" style="margin-top:0">Nội dung chuyển khoản QR tự lấy tên khách hàng + “chuyển tiền”.</p>
 <div class="qr-grid">
-<article class="qr-card"><h4>Thanh toán 50%</h4><div class="qr-amount" id="halfAmount">—</div><p>Ngân hàng MB · STK 5919998888</p><button class="qr-download" disabled="" id="downloadQRHalf" type="button">Tải ảnh QR thanh toán 50%</button></article>
-<article class="qr-card"><h4>Thanh toán 100%</h4><div class="qr-amount" id="fullAmount">—</div><p>Ngân hàng MB · STK 5919998888</p><button class="qr-download" disabled="" id="downloadQRFull" type="button">Tải ảnh QR thanh toán 100%</button></article>
+<article class="qr-card"><h4>50% Tiền Phòng</h4><div class="qr-amount" id="halfAmount">—</div><p>Ngân hàng MB · STK 5919998888</p><button class="qr-download" disabled="" id="downloadQRHalf" type="button">Tải QR</button></article>
+<article class="qr-card"><h4>100% Tiền Phòng</h4><div class="qr-amount" id="fullAmount">—</div><p>Ngân hàng MB · STK 5919998888</p><button class="qr-download" disabled="" id="downloadQRFull" type="button">Tải QR</button></article>
 </div>
 </div>
-<div class="btnrow"><button class="btn secondary" id="copy">Sao chép thông tin thanh toán</button><button class="btn" id="downloadReceipt">Tải ảnh gửi khách</button></div>
+<div class="btnrow"><button class="btn secondary" id="copy"><span class="button-icon" aria-hidden="true">📋</span> Sao chép thông tin</button><button class="btn" id="downloadReceipt"><span class="button-icon" aria-hidden="true">🖼️</span> Tải phiếu thanh toán</button></div>
 <div aria-live="polite" class="status" id="copystatus"></div>
 <p class="note">Bấm “Tải ảnh gửi khách” để tạo phiếu thanh toán PNG gọn gàng, chỉ hiển thị thông tin cần gửi khách.</p>
 </section></div>
@@ -591,15 +691,22 @@ function calculate(){
  else if(hours<=12){kind='Qua đêm';base=price.night;}
  else {
    kind='Ngày đêm';
-   // Tính theo tổng thời lượng thực tế, không dùng số ngày đổi lịch để suy ra giờ thêm.
-   // Từ 12 đến 24 giờ chỉ tính 1 giá ngày đêm, ví dụ 00:00–14:00 = 14 giờ.
-   const fullDays=Math.floor(hours/24);
-   const remainderHours=hours-(fullDays*24);
-   base=Math.max(1,fullDays)*price.day;
-   if(fullDays>0 && remainderHours>0){
-     if(remainderHours<=5) extra=remainderHours*price.over;
-     else if(remainderHours<=12) extra=price.night;
-     else extra=price.day;
+   // Giá thông thường: ngày đầu 22 giờ; các ngày tiếp theo 24 giờ.
+   // Phần giờ dư: dưới 6h tính giờ; 6–12h tính qua đêm; trên 12h đến dưới 24h tính ngày đêm.
+   // Nếu phần còn lại vượt 24h, cộng thêm một ngày đủ rồi phân loại phần dư tiếp theo.
+   // Không áp dụng cho gói khuyến mãi hoặc mục gia hạn thêm giờ.
+   const hoursAfterFirstDay=Math.max(0,hours-22);
+   const additionalFullDays=Math.floor(hoursAfterFirstDay/24);
+   const remainderHours=hoursAfterFirstDay-(additionalFullDays*24);
+   const billableDays=1+additionalFullDays;
+   base=billableDays*price.day;
+   if(remainderHours>0 && remainderHours<6){
+     extra=remainderHours*price.over;
+   } else if(remainderHours>=6 && remainderHours<=12){
+     extra=price.night;
+   } else if(remainderHours>12){
+     // Phần dư trên 12 giờ và nhỏ hơn 24 giờ được tính giá ngày đêm.
+     extra=price.day;
    }
  }
  if(kind==='Qua đêm'){
@@ -608,14 +715,18 @@ function calculate(){
    if(extra>=price.night)discount+=extra*discPct/100;
  }else if(kind==='Ngày đêm'){
    const dailyRates=[];discount=0;
-   const billableDays=Math.max(1,days);
+   // Số ngày được giảm giá phải theo công thức 22 giờ ngày đầu + 24 giờ mỗi ngày sau.
+   const billableDays=1+Math.floor(Math.max(0,hours-22)/24);
    for(let i=0;i<billableDays;i++){
      const date=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i);
      const pct=rateForDate(date);dailyRates.push(pct);discount+=price.day*pct/100;
    }
-   // Giờ thêm chỉ được giảm khi đạt ít nhất giá một đêm; áp dụng mức ưu đãi của ngày trả phòng.
-   if(extra>=price.night)discount+=extra*rateForDate(end)/100;
-   $('discount').value=[...new Set(dailyRates)].map(p=>p+'%').join(' + ')+(extra>=price.night?' + giờ thêm':'');
+   // Giờ dư tính theo bậc giá được giảm theo ngày trả phòng nếu là giá qua đêm/ngày đêm;
+   // phần giờ lẻ dưới 6h không giảm.
+   const hoursAfterFirstDay=Math.max(0,hours-22);
+   const remainderHours=hoursAfterFirstDay-(Math.floor(hoursAfterFirstDay/24)*24);
+   if(remainderHours>=6)discount+=extra*rateForDate(end)/100;
+   $('discount').value=[...new Set(dailyRates)].map(p=>p+'%').join(' + ')+(remainderHours>=6?' + phần giờ dư':'');
  }else{$('discount').value='Không áp dụng';discount=0;}
  } // kết thúc nhánh tính giá thông thường hoặc gói khuyến mãi
  // Làm tròn tiền ưu đãi xuống bội số 1.000đ (ví dụ 70.500đ thành 70.000đ).
@@ -980,4 +1091,71 @@ document.querySelectorAll('.side-link').forEach(link=>link.addEventListener('cli
 .rental-kind-row strong{font-weight:800;color:#163d70;text-align:right}
 @media(max-width:760px){.rental-kind-row{margin:8px 0 10px;padding:12px;font-size:13px}}
 </style>
+
+<style id="sun-homestay-icon-detail-pass">
+/* Biểu tượng thương hiệu Sun Homestay: mái nhà, cửa sổ và mặt trời */
+.side-mark{font-size:0!important;width:58px;height:58px;flex:0 0 58px;display:grid;place-items:center;position:relative;color:#f2b34f;text-shadow:0 3px 12px #071a30}
+.side-mark:before,.side-mark:after{content:none!important;display:none!important}
+.side-mark svg{display:block;width:58px;height:58px;overflow:visible;filter:drop-shadow(0 2px 4px #071a3040)}
+.side-brand strong{line-height:1.25}
+@media(max-width:780px){.side-mark{width:40px;height:40px;flex-basis:40px}.side-mark svg{width:40px;height:40px}}
+.side-nav .side-link span{display:inline-grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border-radius:9px;background:#ffffff12;color:#dce9f8;font-size:18px;line-height:1}
+.side-nav .side-link.active span{background:#ffffff25;color:#fff}
+.panel-heading .heading-icon{border-radius:10px;background:linear-gradient(145deg,#e8f2ff,#d8e9ff);box-shadow:inset 0 0 0 1px #d5e6fb;color:#286fc1;font-size:0!important;position:relative}
+.panel-heading .heading-icon:before{content:"";width:15px;height:19px;border:2px solid currentColor;border-radius:3px;position:absolute;left:12px;top:9px;background:linear-gradient(to bottom,transparent 0 5px,currentColor 5px 7px,transparent 7px 10px,currentColor 10px 12px,transparent 12px)}
+.panel-heading .heading-icon:after{content:"";position:absolute;width:7px;height:2px;background:currentColor;right:8px;bottom:8px;box-shadow:0 -5px 0 currentColor}
+.field label{display:flex!important;align-items:center;gap:7px}
+.field label:before{content:"";display:inline-block;width:15px;height:15px;flex:0 0 15px;opacity:.9;background-repeat:no-repeat;background-position:center;background-size:contain}
+.field label[for="customerName"]:before,.field label[for="extCustomer"]:before{content:"♟";font-size:15px;line-height:15px;color:#315e94}
+.field label[for="site"]:before,.field label[for="extSite"]:before{content:"▦";font-size:15px;line-height:15px;color:#315e94}
+.field label[for="room"]:before,.field label[for="extRoom"]:before{content:"▤";font-size:15px;line-height:15px;color:#315e94}
+.field label[for="type"]:before,.field label[for="extRoomType"]:before{content:"☆";font-size:17px;line-height:15px;color:#315e94}
+.field label[for="checkin"]:before,.field label[for="checkout"]:before,.field label[for="extCheckin"]:before,.field label[for="extCheckout"]:before{content:"▦";font-size:15px;line-height:15px;color:#315e94}
+.field label[for="guestCount"]:before{content:"♟";font-size:15px;line-height:15px;color:#315e94}
+.field label[for="manual"]:before,.field label[for="discount"]:before{content:"＄";font-size:14px;line-height:15px;color:#315e94}
+.field label[for="extensionHours"]:before{content:"◷";font-size:16px;line-height:15px;color:#2670c5}
+.overview-row>span:first-child{gap:8px}
+.overview-row>span:first-child>span:first-child{display:inline-grid;place-items:center;width:20px;height:20px;flex:0 0 20px;border-radius:6px;background:#e0ebf9;color:#245a96;font-size:13px}
+.stay-overview h3{gap:9px}
+.stay-overview h3:before{content:"▦";display:inline-grid;place-items:center;width:25px;height:25px;border-radius:7px;background:#e0edff;color:#245a96;font-size:16px}
+.qr-heading-icon{background:#eaf2ff!important;color:#245ca0!important;border-radius:7px!important}
+#rates h3:before{content:"";display:inline-block;width:19px;height:19px;vertical-align:-4px;margin-right:7px;border-radius:5px;background:#e8f1fc;border:1px solid #d8e7fa}
+.extension-panel h2:before{content:"◷"!important}
+.summary-head-title .edit-mark{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:5px;background:#edf4ff;color:#2b6fc5}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:focus-visible,.qr-download:focus-visible,.side-link:focus-visible{outline:3px solid #91bfff;outline-offset:2px}
+@media(max-width:760px){.side-nav .side-link span{width:26px;height:26px;flex-basis:26px;font-size:15px}.field label:before{width:13px;flex-basis:13px}}
+</style>
+
+
+<style id="sun-homestay-precise-icons">
+/* Bộ icon SVG nét đồng nhất, sắc nét trên mọi hệ điều hành */
+.icon-svg{width:1em;height:1em;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.side-nav .side-link span{font-size:18px!important}
+.side-nav .side-link span .icon-svg{width:19px;height:19px}
+.hero-clock .clock-icon .icon-svg{width:18px;height:18px}
+.panel-heading .heading-icon:before,.panel-heading .heading-icon:after{content:none!important;display:none!important}
+.panel-heading .heading-icon .icon-svg{width:23px;height:23px}
+.overview-row .overview-icon{font-size:0!important}
+.overview-row .overview-icon .icon-svg{width:15px;height:15px}
+.qr-heading-icon .icon-svg{width:18px;height:18px}
+.stay-overview h3:before{content:none!important;display:none!important}
+.stay-overview h3 .stay-icon{display:inline-grid;place-items:center;width:25px;height:25px;flex:none;border-radius:7px;background:#e0edff;color:#245a96}
+.stay-overview h3 .stay-icon .icon-svg{width:16px;height:16px}
+#rates h3:before{content:none!important;display:none!important}
+.rates-icon{display:inline-grid;place-items:center;width:23px;height:23px;vertical-align:middle;margin-right:7px;border-radius:6px;background:#e8f1fc;color:#2869b6}
+.rates-icon .icon-svg{width:15px;height:15px}
+.room-thumb .icon-svg{width:30px;height:30px}
+.field label:before{content:""!important;font-size:0!important;background-repeat:no-repeat;background-position:center;background-size:contain}
+.field label[for="customerName"]:before,.field label[for="extCustomer"]:before,.field label[for="guestCount"]:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23315e94' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='7.5' r='3.5'/%3E%3Cpath d='M5 21v-2a7 7 0 0 1 14 0v2Z'/%3E%3C/svg%3E")!important}
+.field label[for="site"]:before,.field label[for="extSite"]:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23315e94' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 21V4h11v17M15 10h5v11M2 21h20M7 7h2m2 0h1M7 11h2m2 0h1M7 15h2m2 0h1'/%3E%3C/svg%3E")!important}
+.field label[for="room"]:before,.field label[for="extRoom"]:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23315e94' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 20V5M3 15h18v5M3 10h6a3 3 0 0 1 3 3v2M12 12h6a3 3 0 0 1 3 3'/%3E%3C/svg%3E")!important}
+.field label[for="type"]:before,.field label[for="extRoomType"]:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23315e94' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z'/%3E%3C/svg%3E")!important}
+.field label[for="checkin"]:before,.field label[for="checkout"]:before,.field label[for="extCheckin"]:before,.field label[for="extCheckout"]:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23315e94' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='5' width='17' height='16' rx='2'/%3E%3Cpath d='M7.5 3v4M16.5 3v4M3.5 9.5h17'/%3E%3C/svg%3E")!important}
+.field label[for="manual"]:before,.field label[for="discount"]:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23315e94' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M15 8.5h-4a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4H9m3-10v11'/%3E%3C/svg%3E")!important}
+.field label[for="extensionHours"]:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232670c5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3.5 2'/%3E%3C/svg%3E")!important}
+.extension-panel h2:before{content:"◷"!important}
+@media(max-width:760px){.side-nav .side-link span .icon-svg{width:17px;height:17px}}
+</style>
+
 </body></html>
