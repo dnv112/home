@@ -710,23 +710,37 @@ function calculate(){
    }
  }
  if(kind==='Qua đêm'){
+   // Ưu đãi giá qua đêm căn cứ vào ngày bắt đầu tính phí.
    const discPct=rateForDate(start);$('discount').value=discPct+'%';
    discount=base*discPct/100;
    if(extra>=price.night)discount+=extra*discPct/100;
  }else if(kind==='Ngày đêm'){
+   // Mỗi mốc giá ngày đêm được giảm theo ngày bắt đầu của khoảng tính phí:
+   // 22 giờ đầu tiên, sau đó từng khoảng 24 giờ. Giờ lẻ dưới 6 tiếng không giảm.
    const dailyRates=[];discount=0;
-   // Số ngày được giảm giá phải theo công thức 22 giờ ngày đầu + 24 giờ mỗi ngày sau.
-   const billableDays=1+Math.floor(Math.max(0,hours-22)/24);
-   for(let i=0;i<billableDays;i++){
-     const date=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i);
-     const pct=rateForDate(date);dailyRates.push(pct);discount+=price.day*pct/100;
-   }
-   // Giờ dư tính theo bậc giá được giảm theo ngày trả phòng nếu là giá qua đêm/ngày đêm;
-   // phần giờ lẻ dưới 6h không giảm.
    const hoursAfterFirstDay=Math.max(0,hours-22);
-   const remainderHours=hoursAfterFirstDay-(Math.floor(hoursAfterFirstDay/24)*24);
-   if(remainderHours>=6)discount+=extra*rateForDate(end)/100;
-   $('discount').value=[...new Set(dailyRates)].map(p=>p+'%').join(' + ')+(remainderHours>=6?' + phần giờ dư':'');
+   const additionalFullDays=Math.floor(hoursAfterFirstDay/24);
+   const remainderHours=hoursAfterFirstDay-(additionalFullDays*24);
+   const firstPct=rateForDate(start);
+   dailyRates.push(firstPct);
+   discount+=price.day*firstPct/100;
+   let segmentStart=new Date(start.getTime()+22*3600000);
+   for(let i=0;i<additionalFullDays;i++){
+     const pct=rateForDate(segmentStart);
+     dailyRates.push(pct);
+     discount+=price.day*pct/100;
+     segmentStart=new Date(segmentStart.getTime()+24*3600000);
+   }
+   if(remainderHours>=6 && remainderHours<=12){
+     const pct=rateForDate(segmentStart);
+     dailyRates.push(pct);
+     discount+=price.night*pct/100;
+   }else if(remainderHours>12){
+     const pct=rateForDate(segmentStart);
+     dailyRates.push(pct);
+     discount+=price.day*pct/100;
+   }
+   $('discount').value=[...new Set(dailyRates)].map(p=>p+'%').join(' + ')+(remainderHours>=6?' · ưu đãi theo từng mốc tính phí':'');
  }else{$('discount').value='Không áp dụng';discount=0;}
  } // kết thúc nhánh tính giá thông thường hoặc gói khuyến mãi
  // Làm tròn tiền ưu đãi xuống bội số 1.000đ (ví dụ 70.500đ thành 70.000đ).
