@@ -511,11 +511,23 @@ code, pre, kbd, samp {
 </style>
 
 <style id="promo-custom-price-style">
-.promo-options-custom{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.promo-options-custom{grid-template-columns:repeat(2,minmax(0,1fr))!important}.promo-price-field{margin-top:10px!important}.promo-price-field select{width:100%!important;min-height:44px!important;font-size:15px!important;font-weight:800!important;color:#24466f!important;background:#fff!important;border:1px solid #cbd9eb!important;border-radius:10px!important;padding:10px 12px!important}.promo-price-field label{display:block!important;margin-bottom:6px!important;font-size:12px!important;font-weight:750!important;color:var(--text)!important}
 .promo-options-custom .promo-choice{min-width:0;justify-content:flex-start!important;gap:9px!important}
 .promo-options-custom .promo-custom-choice{flex-wrap:wrap}
 .promo-options-custom .promo-custom-price{width:100%!important;min-height:38px!important;margin:2px 0 0 25px!important;flex:1 1 calc(100% - 25px);box-sizing:border-box!important;border:1px solid #d5e1f0!important;border-radius:8px!important;padding:8px 10px!important;background:#fff!important;color:#18395f!important;font-size:13px!important}
 @media(max-width:780px){.promo-options-custom{grid-template-columns:1fr!important}}
+</style>
+<style id="download-note-button">
+.summary-column .qr-panel .btnrow{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.summary-column .qr-panel .btnrow .btn{min-width:0;white-space:normal;overflow-wrap:anywhere}
+@media(max-width:520px){.summary-column .qr-panel .btnrow{grid-template-columns:1fr!important}}
+</style>
+
+<style id="promo-value-dropdown">
+.promo-options-custom .promo-choice{min-width:0;flex-wrap:wrap}
+.promo-options-custom .promo-custom-choice{display:grid!important;grid-template-columns:16px auto minmax(115px,1fr)!important;justify-content:stretch!important;text-align:left!important}
+.promo-options-custom .promo-custom-choice .promo-custom-price{width:100%;min-width:0;min-height:38px!important;padding:7px 9px!important;font-size:12px!important;border:1px solid #d5e1f0!important;border-radius:8px!important;background:#fff!important;color:#18395f!important}
+@media(max-width:760px){.promo-options-custom .promo-custom-choice{grid-template-columns:16px minmax(0,1fr)!important}.promo-options-custom .promo-custom-choice .promo-custom-price{grid-column:2;}}
 </style>
 </head>
 <body><main id="app"><div class="dashboard-shell">
@@ -542,10 +554,10 @@ code, pre, kbd, samp {
 <div class="two"><div class="field"><label for="room">Mã Phòng</label><select id="room"></select></div><div class="field"><label for="type">Hạng Phòng</label><input id="type" readonly=""/></div></div>
 <div class="two"><div class="field"><label for="checkin">Giờ Check-in</label><input id="checkin" type="datetime-local"/></div><div class="field"><label for="checkout">Giờ Check-out</label><input id="checkout" type="datetime-local"/></div></div>
 <div class="two"><div class="field"><label for="guestCount">Số Khách</label><input id="guestCount" min="1" placeholder="Nhập số khách" step="1" type="number" value="2"/></div><div class="field"><label for="manual">Phụ Thu / Giảm Trừ (VNĐ)</label><input id="manual" step="1000" type="number" value="0"/></div></div>
-<div class="field"><label class="promo-label">🎁 Chọn Khuyến Mãi</label><div class="promo-options promo-options-custom"><label class="promo-choice"><input checked="" name="promoNight" type="radio" value="0"/> <span>Không áp dụng</span></label><label class="promo-choice promo-custom-choice"><input name="promoNight" type="radio" value="custom"/> <span>Ưu Đãi</span><input aria-label="Giá gói khuyến mãi tự nhập" class="promo-custom-price" id="promoCustomPrice" type="number" min="0" step="1000" placeholder="Nhập giá (đ)" inputmode="numeric"/></label></div><p class="note" style="margin-top:0">Chọn “Ưu Đãi” và nhập giá gói khuyến mãi. Gói áp dụng từ giờ check-in đến mốc 10:00 kế tiếp (check-in trước 10:00: tính đến 10:00 cùng ngày; check-in từ 10:00 trở đi: tính đến 10:00 hôm sau). Phần còn lại sau mốc 10:00: dưới 6h tính 50.000đ/giờ; từ 6 đến dưới 12h tính giá qua đêm; từ 12 đến 24h tính giá ngày đêm. Ưu đãi theo ngày chỉ áp dụng cho phần qua đêm / ngày đêm, không giảm vào giá gói.</p></div>
+<div class="field"><label class="promo-label">🎁 Chọn Khuyến Mãi</label><div class="promo-options promo-options-custom"><label class="promo-choice"><input checked="" name="promoNight" type="radio" value="0"/> <span>Không áp dụng</span></label><label class="promo-choice promo-custom-choice"><input name="promoNight" type="radio" value="custom"/> <span>Ưu Đãi</span></label></div><div class="field promo-price-field"><label for="promoCustomPrice">Mức giá ưu đãi</label><select aria-label="Giá trị ưu đãi" class="promo-custom-price" id="promoCustomPrice"><option value="300000">300.000đ</option><option value="350000">350.000đ</option><option value="400000">400.000đ</option><option value="450000">450.000đ</option></select></div><p class="note" style="margin-top:0">Chọn “Ưu Đãi”, sau đó chọn mức giá trong ô “Mức giá ưu đãi”. Khi áp dụng giá sale, thời gian đến 10:00 sáng hôm sau tính theo giá gói; từ 10:00 đến tối đa 12:00 trưa hôm sau phụ thu 50.000đ/giờ. Nếu check-out sau 12:00 trưa hôm sau, không áp dụng giá sale và toàn bộ thời gian sẽ tính theo công thức thông thường từ giờ check-in. Quy tắc tính giờ: trong khung 00:00–10:00 hoặc 06:00–21:00 cùng ngày, khoảng 6–12 giờ tính giá qua đêm; trong khung 21:00–10:00 hôm sau, toàn bộ khoảng tính giá qua đêm; ngoài các khung này, từ 6 giờ trở lên tính giá ngày đêm.</p></div>
 <div class="field"><label for="discount">ƯU ĐÃI THEO TỪNG NGÀY</label><input id="discount" readonly="" type="text" value="Tự động theo ngày"/></div>
 <div class="btnrow"><button class="btn" id="calc">Tính tiền phòng</button><button class="btn secondary" id="reset">Làm mới</button></div><div aria-live="polite" class="status" id="status"></div>
-<p class="note">Giá ngày đêm thông thường: ngày đầu tính 22 giờ; mỗi ngày tiếp theo tính 24 giờ; giờ dư tính 30.000đ/giờ (CS3: 50.000đ/giờ). Quy tắc này không áp dụng cho gói khuyến mãi qua đêm đến 10:00 hôm sau hoặc gia hạn thêm giờ. Ưu đãi tự động: Thứ 2–5: 15%, Thứ 6–7: 5%, Chủ Nhật: 10%. Với gói khuyến mãi đến 10:00 kế tiếp, ưu đãi chỉ trừ vào phí thời gian còn lại được tính theo giá qua đêm / ngày đêm; không trừ vào giá gói. Có thể nhập phụ thu/giảm trừ âm dương theo thực tế.</p>
+<p class="note">Công thức khách đặt dài ngày (CS1 + CS2 + CS3): ngày đầu tính 22 giờ + mỗi ngày tiếp theo 24 giờ. Giờ dư dưới 6 giờ tính theo giờ (CS1 + CS2: 30.000đ/giờ; CS3: 50.000đ/giờ); giờ dư từ 6 đến 12 giờ tính giá qua đêm; giờ dư trên 12 giờ tính thêm giá ngày đêm. Nếu khách đang ở gần đến giờ checkout mới gia hạn thêm theo giờ, tính 80.000đ/giờ. Gia hạn thêm 1–2 ngày áp dụng lại công thức khách đặt dài ngày. Ưu đãi tự động: Tháng 11 và tháng 12 (áp dụng cả 3 cơ sở): Thứ 2–5 giảm 10%; Thứ 6, Thứ 7 và Chủ Nhật đúng giá (không giảm). Chính sách áp dụng từ 01/11 đến hết 31/12. Ngoài tháng 11–12: Thứ 2–5 giảm 15%, Thứ 6–7 giảm 5%, Chủ Nhật giảm 10%. Với gói khuyến mãi đến 10:00 kế tiếp, ưu đãi chỉ trừ vào phí thời gian còn lại được tính theo giá qua đêm / ngày đêm; không trừ vào giá gói. Có thể nhập phụ thu/giảm trừ âm dương theo thực tế.</p>
 </section>
 <div class="summary-column">
 <section class="panel summary-panel" id="summaryArea">
@@ -580,7 +592,7 @@ code, pre, kbd, samp {
 <article class="qr-card"><h4>100% Tiền Phòng</h4><div class="qr-amount" id="fullAmount">—</div><p>Ngân hàng MB · STK 5919998888</p><button class="qr-download" disabled="" id="downloadQRFull" type="button">Tải QR</button></article>
 </div>
 </div>
-<div class="btnrow"><button class="btn secondary" id="copy"><span class="button-icon" aria-hidden="true">📋</span> Sao chép thông tin</button><button class="btn" id="downloadReceipt"><span class="button-icon" aria-hidden="true">🖼️</span> Tải phiếu thanh toán</button></div>
+<div class="btnrow"><button class="btn secondary" id="copy"><span class="button-icon" aria-hidden="true">📋</span> Sao chép thông tin</button><button class="btn" id="downloadReceipt"><span class="button-icon" aria-hidden="true">🖼️</span> Tải phiếu thanh toán</button><button class="btn secondary" id="downloadNote"><span class="button-icon" aria-hidden="true">📝</span> Tải file Note</button></div>
 <div aria-live="polite" class="status" id="copystatus"></div>
 <p class="note">Bấm “Tải ảnh gửi khách” để tạo phiếu thanh toán PNG gọn gàng, chỉ hiển thị thông tin cần gửi khách.</p>
 </section></div>
@@ -657,7 +669,7 @@ function calculate(){
  const site=$('site').value,type=$('type').value,price=rates[site][type];let kind,base=0,extra=0,discount=0;
  const selectedPromo=document.querySelector('input[name="promoNight"]:checked')?.value||'0';
  const promoPrice=selectedPromo==='custom'?Math.max(0,Number($('promoCustomPrice').value)||0):Number(selectedPromo)||0;
- const rateForDate=date=>{const weekday=date.getDay();return (weekday>=1&&weekday<=4)?15:(weekday===5||weekday===6)?5:10;};
+ const rateForDate=date=>{const weekday=date.getDay(),month=date.getMonth();if(month===10||month===11)return (weekday>=1&&weekday<=4)?10:0;return (weekday>=1&&weekday<=4)?15:(weekday===5||weekday===6)?5:10;};
  // Khoảng thời gian được tính giá qua đêm:
  // (1) cùng ngày, nằm trọn trong 06:00–21:00;
  // (2) từ 21:00 trở đi đến 10:00 ngày hôm sau.
@@ -676,55 +688,25 @@ function calculate(){
    return duration>=6&&duration<=12&&(withinMidnightToTen||withinSixToTwentyOne);
  };
  const classifyRemainder=(from,to,duration)=>{
+   // Phân loại cả thời gian thuê và giờ dư theo khung giờ:
+   // 00:00–10:00 cùng ngày hoặc 06:00–21:00 cùng ngày: đủ 6–12 giờ tính qua đêm.
+   // 21:00–10:00 ngày hôm sau: toàn bộ khoảng tính qua đêm, bất kể số giờ.
+   // Ngoài các khung trên: từ 6 giờ trở lên tính ngày đêm; dưới 6 giờ tính theo giờ.
    if(duration<=0)return 'none';
-   const sameDate=from.getFullYear()===to.getFullYear()&&from.getMonth()===to.getMonth()&&from.getDate()===to.getDate();
-   const fromMinutes=from.getHours()*60+from.getMinutes();
-   const toMinutes=to.getHours()*60+to.getMinutes();
-   const nextDate=new Date(from.getFullYear(),from.getMonth(),from.getDate()+1);
-   const endsNextDay=to.getFullYear()===nextDate.getFullYear()&&to.getMonth()===nextDate.getMonth()&&to.getDate()===nextDate.getDate();
-   // 21:00–10:00 ngày hôm sau: mọi thời lượng nằm trọn trong khung đều tính giá qua đêm.
-   if(fromMinutes>=1260&&endsNextDay&&toMinutes<=600)return 'night';
-   // Cùng ngày, trong khung 00:00–10:00 hoặc 06:00–21:00: 6–12 giờ tính giá qua đêm.
-   const withinMidnightToTen=sameDate&&fromMinutes>=0&&toMinutes<=600;
-   const withinSixToTwentyOne=sameDate&&fromMinutes>=360&&toMinutes<=1260;
-   if(duration>=6&&duration<=12&&(withinMidnightToTen||withinSixToTwentyOne))return 'night';
-   // Ngoài các khung trên: dưới 6 giờ tính giờ lẻ; từ 6 giờ trở lên tính giá ngày đêm.
+   if(isNightWindow(from,to))return 'night';
    if(duration<6)return 'hourly';
    return 'day';
  };
- if(promoPrice>0){
-   // Gói khuyến mãi áp dụng từ giờ check-in đến mốc 10:00 kế tiếp.
-   // Nếu check-in trước 10:00 thì ưu đãi kết thúc lúc 10:00 cùng ngày;
-   // nếu check-in từ 10:00 trở đi thì kết thúc lúc 10:00 ngày hôm sau.
-   kind='Khuyến mãi đến 10:00';base=promoPrice;
-   const promoEnd=new Date(start.getFullYear(),start.getMonth(),start.getDate(),
-     start.getHours()<10 ? 10 : 10,0,0,0);
-   if(start.getHours()>=10 || (start.getHours()===10 && start.getMinutes()>0)){
-     promoEnd.setDate(promoEnd.getDate()+1);
-   }
-   let remainingHours=Math.max(0,(end-promoEnd)/36e5);
-   let cursor=new Date(promoEnd);
-   const discountParts=[];
-   const hourlyRate=50000;
-   const addDiscount=(amount,date,label)=>{
-     const pct=rateForDate(date);discount+=amount*pct/100;
-     discountParts.push(`${label} ${pct}%`);
-   };
-   // Chia thời gian còn lại theo từng khoảng tối đa 24 giờ:
-   // <6h tính giờ; 6–<12h tính qua đêm; 12–24h tính ngày đêm.
-   while(remainingHours>0.000001){
-     let segmentHours,fee,segmentKind;
-     const possibleEnd=new Date(cursor.getTime()+remainingHours*3600000);
-     const segmentClass=classifyRemainder(cursor,possibleEnd,remainingHours);
-     if(segmentClass==='night'){segmentHours=remainingHours;fee=price.night;segmentKind='Qua đêm';}
-     else if(segmentClass==='day'){segmentHours=remainingHours;fee=price.day;segmentKind='Ngày đêm';}
-     else {segmentHours=remainingHours;fee=segmentHours*hourlyRate;segmentKind='Giờ lẻ';}
-     extra+=fee;
-     if(segmentKind==='Ngày đêm'||segmentKind==='Qua đêm')addDiscount(fee,cursor,segmentKind);
-     cursor=new Date(cursor.getTime()+segmentHours*3600000);
-     remainingHours-=segmentHours;
-   }
-   $('discount').value=discountParts.length?`Gói KM không giảm · phần còn lại: ${discountParts.join(' + ')}`:'Không áp dụng (chỉ tính giờ lẻ)';
+ const saleCutoff=new Date(start.getFullYear(),start.getMonth(),start.getDate()+1,12,0,0,0);
+ if(promoPrice>0 && end<=saleCutoff){
+   // Chỉ áp dụng giá sale nếu khách trả phòng không muộn hơn 12:00 trưa hôm sau.
+   // Giá gói sale bao gồm thời gian đến 10:00 hôm sau; từ 10:00 đến giờ trả,
+   // phụ thu 50.000đ/giờ, tối đa đến 12:00. Nếu quá 12:00, chuyển hẳn sang công thức thường từ giờ check-in.
+   kind='Khuyến mãi đến 12:00';base=promoPrice;
+   const surchargeStart=new Date(start.getFullYear(),start.getMonth(),start.getDate()+1,10,0,0,0);
+   const surchargeHours=Math.max(0,(end-Math.max(start.getTime(),surchargeStart.getTime()))/36e5);
+   extra=surchargeHours*50000;
+   $('discount').value=surchargeHours>0?'Gói KM · phụ thu 50.000đ/giờ':'Gói khuyến mãi';
  }else{
  // Quy ước qua đêm đặc biệt: nhận lúc 21:00 và trả lúc 10:00 ngày hôm sau.
  // Thuê qua đêm: thời gian lưu trú nằm trong khung 21:00–10:00 hôm sau.
@@ -797,8 +779,8 @@ function calculate(){
  $('kind').textContent=kind;$('base').textContent=money(base);$('extra').textContent=money(extra);$('saved').textContent='− '+money(discount);$('adjust').textContent=(adj>0?'+ ':adj<0?'− ':'')+money(Math.abs(adj));$('total').textContent=money(total);$('hours').textContent=hours.toLocaleString('vi-VN',{maximumFractionDigits:2});$('nights').textContent=days;$('perday').textContent=money(price.day);
  setPaymentQRs(total);$('status').textContent='Đã cập nhật phép tính.';
 }
-$('site').addEventListener('change',refreshRooms);$('room').addEventListener('change',()=>{updateType();calculate()});['checkin','checkout','discount','manual'].forEach(id=>$(id).addEventListener('input',calculate));$('customerName').addEventListener('input',calculate);document.querySelectorAll('input[name="promoNight"]').forEach(el=>el.addEventListener('change',calculate));$('promoCustomPrice').addEventListener('input',()=>{const custom=document.querySelector('input[name="promoNight"][value="custom"]');if(custom.checked)calculate();});$('promoCustomPrice').addEventListener('focus',()=>{document.querySelector('input[name="promoNight"][value="custom"]').checked=true;calculate();});$('calc').addEventListener('click',calculate);
-$('reset').addEventListener('click',()=>{$('checkin').value='';$('checkout').value='';$('discount').value='Tự động theo ngày';$('manual').value='0';document.querySelector('input[name="promoNight"][value="0"]').checked=true;$('promoCustomPrice').value='';$('status').textContent='Đã làm mới thông tin thời gian.';blank();});
+$('site').addEventListener('change',refreshRooms);$('room').addEventListener('change',()=>{updateType();calculate()});['checkin','checkout','discount','manual'].forEach(id=>$(id).addEventListener('input',calculate));$('customerName').addEventListener('input',calculate);document.querySelectorAll('input[name="promoNight"]').forEach(el=>el.addEventListener('change',calculate));$('promoCustomPrice').addEventListener('change',()=>{const custom=document.querySelector('input[name="promoNight"][value="custom"]');custom.checked=true;calculate();});$('promoCustomPrice').addEventListener('focus',()=>{document.querySelector('input[name="promoNight"][value="custom"]').checked=true;calculate();});$('calc').addEventListener('click',calculate);
+$('reset').addEventListener('click',()=>{$('checkin').value='';$('checkout').value='';$('discount').value='Tự động theo ngày';$('manual').value='0';document.querySelector('input[name="promoNight"][value="0"]').checked=true;$('promoCustomPrice').value='300000';$('status').textContent='Đã làm mới thông tin thời gian.';blank();});
 
 function downloadReceipt(){
  if($('total').textContent==='—'||!$('checkin').value||!$('checkout').value){
@@ -944,6 +926,62 @@ Hạng phòng: ${$('type').value || '—'}
 Check-in: ${$('checkin').value.replace('T',' ')}
 Check-out: ${$('checkout').value.replace('T',' ')}
 Tiền: ${$('total').textContent}`;try{await navigator.clipboard.writeText(txt);$('copystatus').textContent='Đã sao chép thông tin thanh toán.';}catch(e){$('copystatus').textContent=txt;}})
+$('downloadNote').addEventListener('click',()=>{
+ const ci=$('checkin').value, co=$('checkout').value;
+ if(!ci||!co||$('total').textContent==='—'){
+   $('copystatus').textContent='Vui lòng nhập Check-in, Check-out và tính tiền trước khi tải Note.';return;
+ }
+ const start=new Date(ci), end=new Date(co), hours=(end-start)/3600000;
+ if(!Number.isFinite(hours)||hours<=0){$('copystatus').textContent='Vui lòng kiểm tra lại Check-in và Check-out.';return;}
+ const customer=($('customerName').value||'').trim();
+ const site=$('site').value, price=(rates[site]||{})[$('type').value]||{};
+ const fmtDate=d=>d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'});
+ const fmtTime=d=>d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',hour12:false});
+ const fmtMoney=n=>Math.round(n).toLocaleString('vi-VN')+'đ';
+ const weekdayName=d=>['Chủ Nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'][d.getDay()];
+ const rateForDate=d=>{const w=d.getDay(),month=d.getMonth();if(month===10||month===11)return (w>=1&&w<=4)?10:0;return (w>=1&&w<=4)?15:((w===5||w===6)?5:10);};
+ const segments=[];let segStart=new Date(start), index=1;
+ while(segStart<end && index<=100){
+   const allotted=index===1?22:24;
+   const segEnd=new Date(Math.min(end.getTime(),segStart.getTime()+allotted*3600000));
+   const segHours=(segEnd-segStart)/3600000;
+   let fee=0,kind='giá giờ dư';
+   if(segHours>12){fee=Number(price.day)||0;kind='giá ngày đêm';}
+   else if(segHours>=6){fee=Number(price.night)||0;kind='giá qua đêm';}
+   else {fee=segHours*(Number(price.over)||0);kind='giờ dư × '+fmtMoney(Number(price.over)||0)+'/giờ';}
+   const pct=rateForDate(segStart), discount=(segHours>=6?fee*pct/100:0);
+   segments.push({index,start:new Date(segStart),end:new Date(segEnd),hours:segHours,fee,kind,pct,discount});
+   segStart=segEnd;index++;
+ }
+ const totalFee=segments.reduce((sum,x)=>sum+x.fee,0);
+ const totalDiscount=segments.reduce((sum,x)=>sum+x.discount,0);
+ const finalTotal=totalFee-totalDiscount;
+ const lines=[];
+ lines.push('Tên khách: '+(customer||'—'));
+ lines.push('Check-in: '+fmtTime(start)+' '+fmtDate(start));
+ lines.push('Check-out: '+fmtTime(end)+' '+fmtDate(end));
+ lines.push('');
+ segments.forEach(seg=>{
+   const labelStart=fmtTime(seg.start)+' '+fmtDate(seg.start), labelEnd=fmtTime(seg.end)+' '+fmtDate(seg.end);
+   const h=Number.isInteger(seg.hours)?seg.hours:seg.hours.toLocaleString('vi-VN',{maximumFractionDigits:2});
+   const afterDiscount=seg.fee-seg.discount;
+   if(seg.hours<6){
+     const hourlyRate=Number(price.over)||0;
+     const siteLabel=(site==='cs3'||String(site).toLowerCase().includes('3'))?'CS3':'CS1/CS2';
+     lines.push('Ngày '+seg.index+'('+weekdayName(seg.start)+'): '+labelStart+' - '+labelEnd+': ('+h+'h là giờ dư) = '+h+'h × '+fmtMoney(hourlyRate)+'/giờ ('+siteLabel+') = '+fmtMoney(seg.fee));
+   }else{
+     lines.push('Ngày '+seg.index+'('+weekdayName(seg.start)+'): '+labelStart+' - '+labelEnd+': ('+h+'h) '+fmtMoney(seg.fee)+' - giảm '+seg.pct+'% = '+fmtMoney(afterDiscount));
+   }
+ });
+ lines.push('');
+ lines.push('Thành tiền: '+segments.map(seg=>fmtMoney(seg.fee-seg.discount)).join(' + ')+' = '+fmtMoney(segments.reduce((sum,seg)=>sum+seg.fee-seg.discount,0)));
+ const blob=new Blob(['\ufeff',lines.join('\n')],{type:'text/plain;charset=utf-8'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ const safeName=customer.replace(/[\\/:*?"<>|]/g,'-').replace(/\s+/g,' ').slice(0,80);
+ a.href=url;a.download=(safeName?safeName+' - Sun Homestay':'Sun-Homestay-chi-tiet-tinh-tien')+'.txt';
+ document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ $('copystatus').textContent='Đã tải Note theo mẫu ngắn: khách, giờ ở từng ngày, ưu đãi và thành tiền.';
+});
 const now=new Date();const localVal=d=>{const pad=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;};
 function refreshExtensionRooms(){
  const site=$('extSite').value, map=roomMap[site]||{};const previous=$('extRoom').value;
@@ -966,10 +1004,10 @@ function updateExtension(){
  const discountLabel=Math.round(discountRate*100)+'%';
  const discountAmountFor=amount=>Math.ceil((amount*discountRate)/1000)*1000; // Làm tròn tiền giảm lên bội số 1.000đ
  let fee=0, pricingType='', dayCount=0, dayRate=roomRate?roomRate.day:0, extraHours=0, extraType='', extraFee=0;
- const extraRate=30000;
+ const extraRate=80000;
  let undiscountedRoomFee=0, discountAmount=0;
  if(hours<6){
-   extraHours=Math.ceil(hours); extraFee=extraHours*extraRate; fee=extraFee; extraType=`${extraHours} giờ (đã làm tròn lên) × 30.000đ`; pricingType='Số giờ làm tròn lên × 30.000đ (không giảm giá)';
+   extraHours=Math.ceil(hours); extraFee=extraHours*extraRate; fee=extraFee; extraType=`${extraHours} giờ (đã làm tròn lên) × 80.000đ`; pricingType='Gia hạn sát giờ trả: số giờ làm tròn lên × 80.000đ/giờ (không giảm giá)';
  } else if(hours<12){
    undiscountedRoomFee=roomRate?roomRate.night:0; discountAmount=discountAmountFor(undiscountedRoomFee); fee=undiscountedRoomFee-discountAmount; pricingType=`Giá qua đêm giảm ${discountLabel}`;
  } else {
@@ -978,7 +1016,7 @@ function updateExtension(){
    const base=dayCount*dayRate;
    let extraUndiscountedRoomFee=0;
    if(extraHours>0 && extraHours<6){
-     const roundedExtraHours=Math.ceil(extraHours); extraFee=roundedExtraHours*extraRate; extraType=`${roundedExtraHours} giờ dư (đã làm tròn lên) × ${money(extraRate)} (không giảm)`;
+     const roundedExtraHours=Math.ceil(extraHours); extraFee=roundedExtraHours*30000; extraType=`${roundedExtraHours} giờ dư (đã làm tròn lên) × 30.000đ/giờ (theo công thức khách đặt dài ngày)`;
    } else if(extraHours>=6 && extraHours<=12){
      extraUndiscountedRoomFee=roomRate?roomRate.night:0; extraFee=extraUndiscountedRoomFee; extraType='giờ dư 6–12 tiếng: giá qua đêm';
    } else if(extraHours>12){
