@@ -598,7 +598,7 @@ code, pre, kbd, samp {
 <div class="two extension-top-fields"><div class="field"><label for="extRoom">Mã Phòng</label><select id="extRoom"></select></div><div class="field"><label for="extRoomType">Hạng Phòng</label><input id="extRoomType" placeholder="Tự động theo phòng" readonly="" type="text"/></div></div>
 <div class="two"><div class="field"><label for="extCheckin">Giờ Check-in (Ban Đầu)</label><input id="extCheckin" type="datetime-local"/></div><div class="field"><label for="extCheckout">Giờ Check-Out (Sau Gia Hạn)</label><input id="extCheckout" type="datetime-local"/></div></div>
 <div class="two extension-results"><div class="field hours-card"><div aria-hidden="true" class="result-icon">◷</div><label for="extensionHours">Số giờ gia hạn</label><input id="extensionHours" readonly="" type="text" value="—"/><span class="result-detail" id="extensionTimeDetail">Thời gian: —</span></div><div class="field fee-card"><div aria-hidden="true" class="result-icon">＄</div><label for="extensionFeeDisplay">Phí gia hạn</label><input id="extensionFeeDisplay" readonly="" type="text" value="—"/><span class="result-detail" id="extensionFeeDetail">Theo mức giá áp dụng</span></div></div>
-<div aria-label="Quy tắc giá gia hạn" class="extension-pricing"><div class="extension-price hourly"><b>Dưới 6 giờ</b><span>Mỗi giờ (lẻ làm tròn lên) × 30.000đ</span></div><div class="extension-price night"><b>6–12 giờ</b><span>Giá qua đêm được giảm theo thứ; giờ lẻ không áp dụng giảm</span></div><div class="extension-price day"><b>Trên 12 giờ</b><span>Giá ngày đêm/qua đêm được giảm theo thứ; giờ lẻ × 30.000đ không giảm</span></div></div>
+<div aria-label="Quy tắc giá gia hạn" class="extension-pricing"><div class="extension-price hourly"><b>Dưới 6 giờ</b><span>Mỗi giờ × 30.000đ (CS1+2) / 50.000đ (CS3)</span></div><div class="extension-price night"><b>6–12 giờ</b><span>Giá qua đêm được giảm theo thứ; giờ lẻ không áp dụng giảm</span></div><div class="extension-price day"><b>Trên 12 giờ</b><span>Giá ngày đêm/qua đêm được giảm theo thứ; giờ lẻ × 30.000đ không giảm</span></div></div>
 <div class="btnrow"><button class="btn" id="downloadExtension">Tải phiếu gia hạn gửi khách</button></div><div aria-live="polite" class="status" id="extensionStatus"></div>
 </section>
 </div></div></main>
@@ -658,6 +658,40 @@ function calculate(){
  const selectedPromo=document.querySelector('input[name="promoNight"]:checked')?.value||'0';
  const promoPrice=selectedPromo==='custom'?Math.max(0,Number($('promoCustomPrice').value)||0):Number(selectedPromo)||0;
  const rateForDate=date=>{const weekday=date.getDay();return (weekday>=1&&weekday<=4)?15:(weekday===5||weekday===6)?5:10;};
+ // Khoảng thời gian được tính giá qua đêm:
+ // (1) cùng ngày, nằm trọn trong 06:00–21:00;
+ // (2) từ 21:00 trở đi đến 10:00 ngày hôm sau.
+ const isNightWindow=(from,to)=>{
+   const sameDate=from.getFullYear()===to.getFullYear()&&from.getMonth()===to.getMonth()&&from.getDate()===to.getDate();
+   const fromMinutes=from.getHours()*60+from.getMinutes();
+   const toMinutes=to.getHours()*60+to.getMinutes();
+   const duration=(to-from)/36e5;
+   const nextDate=new Date(from.getFullYear(),from.getMonth(),from.getDate()+1);
+   const endsNextDay=to.getFullYear()===nextDate.getFullYear()&&to.getMonth()===nextDate.getMonth()&&to.getDate()===nextDate.getDate();
+   // 21:00–10:00 ngày hôm sau: toàn bộ khoảng thuê tính giá qua đêm.
+   if(fromMinutes>=1260&&endsNextDay&&toMinutes<=600)return true;
+   // Cùng ngày: khung 00:00–10:00 hoặc 06:00–21:00, nếu thuê 6–12 giờ thì tính qua đêm.
+   const withinMidnightToTen=sameDate&&fromMinutes>=0&&toMinutes<=600;
+   const withinSixToTwentyOne=sameDate&&fromMinutes>=360&&toMinutes<=1260;
+   return duration>=6&&duration<=12&&(withinMidnightToTen||withinSixToTwentyOne);
+ };
+ const classifyRemainder=(from,to,duration)=>{
+   if(duration<=0)return 'none';
+   const sameDate=from.getFullYear()===to.getFullYear()&&from.getMonth()===to.getMonth()&&from.getDate()===to.getDate();
+   const fromMinutes=from.getHours()*60+from.getMinutes();
+   const toMinutes=to.getHours()*60+to.getMinutes();
+   const nextDate=new Date(from.getFullYear(),from.getMonth(),from.getDate()+1);
+   const endsNextDay=to.getFullYear()===nextDate.getFullYear()&&to.getMonth()===nextDate.getMonth()&&to.getDate()===nextDate.getDate();
+   // 21:00–10:00 ngày hôm sau: mọi thời lượng nằm trọn trong khung đều tính giá qua đêm.
+   if(fromMinutes>=1260&&endsNextDay&&toMinutes<=600)return 'night';
+   // Cùng ngày, trong khung 00:00–10:00 hoặc 06:00–21:00: 6–12 giờ tính giá qua đêm.
+   const withinMidnightToTen=sameDate&&fromMinutes>=0&&toMinutes<=600;
+   const withinSixToTwentyOne=sameDate&&fromMinutes>=360&&toMinutes<=1260;
+   if(duration>=6&&duration<=12&&(withinMidnightToTen||withinSixToTwentyOne))return 'night';
+   // Ngoài các khung trên: dưới 6 giờ tính giờ lẻ; từ 6 giờ trở lên tính giá ngày đêm.
+   if(duration<6)return 'hourly';
+   return 'day';
+ };
  if(promoPrice>0){
    // Gói khuyến mãi áp dụng từ giờ check-in đến mốc 10:00 kế tiếp.
    // Nếu check-in trước 10:00 thì ưu đãi kết thúc lúc 10:00 cùng ngày;
@@ -680,9 +714,10 @@ function calculate(){
    // <6h tính giờ; 6–<12h tính qua đêm; 12–24h tính ngày đêm.
    while(remainingHours>0.000001){
      let segmentHours,fee,segmentKind;
-     if(remainingHours>=24){segmentHours=24;fee=price.day;segmentKind='Ngày đêm';}
-     else if(remainingHours>=12){segmentHours=remainingHours;fee=price.day;segmentKind='Ngày đêm';}
-     else if(remainingHours>=6){segmentHours=remainingHours;fee=price.night;segmentKind='Qua đêm';}
+     const possibleEnd=new Date(cursor.getTime()+remainingHours*3600000);
+     const segmentClass=classifyRemainder(cursor,possibleEnd,remainingHours);
+     if(segmentClass==='night'){segmentHours=remainingHours;fee=price.night;segmentKind='Qua đêm';}
+     else if(segmentClass==='day'){segmentHours=remainingHours;fee=price.day;segmentKind='Ngày đêm';}
      else {segmentHours=remainingHours;fee=segmentHours*hourlyRate;segmentKind='Giờ lẻ';}
      extra+=fee;
      if(segmentKind==='Ngày đêm'||segmentKind==='Qua đêm')addDiscount(fee,cursor,segmentKind);
@@ -692,30 +727,33 @@ function calculate(){
    $('discount').value=discountParts.length?`Gói KM không giảm · phần còn lại: ${discountParts.join(' + ')}`:'Không áp dụng (chỉ tính giờ lẻ)';
  }else{
  // Quy ước qua đêm đặc biệt: nhận lúc 21:00 và trả lúc 10:00 ngày hôm sau.
- const overnightWindow=start.getHours()===21&&start.getMinutes()===0&&
-   end.getHours()===10&&end.getMinutes()===0&&days===1;
+ // Thuê qua đêm: thời gian lưu trú nằm trong khung 21:00–10:00 hôm sau.
+ const overnightWindow=isNightWindow(start,end);
  if(overnightWindow){kind='Qua đêm';base=price.night;}
  else if(hours<=2){kind='2H';base=price.h2;}
- else if(hours<6){kind='3H';base=price.h3;extra=Math.max(0,hours-3)*price.over;}
- else if(hours<=12){kind='Qua đêm';base=price.night;}
+ else if(hours<=3){kind='3H';base=price.h3;}
+ else if(hours<6){kind='Thuê theo giờ';base=price.h3;extra=Math.ceil((hours-3)*100)/100*price.over;}
+ else if(hours<=12){
+   const segmentClass=classifyRemainder(start,end,hours);
+   if(segmentClass==='night'){kind='Qua đêm';base=price.night;}
+   else {kind='Ngày đêm';base=price.day;}
+ }
  else {
    kind='Ngày đêm';
-   // Giá thông thường: ngày đầu 22 giờ; các ngày tiếp theo 24 giờ.
-   // Phần giờ dư: dưới 6h tính giờ; 6–12h tính qua đêm; trên 12h đến dưới 24h tính ngày đêm.
-   // Nếu phần còn lại vượt 24h, cộng thêm một ngày đủ rồi phân loại phần dư tiếp theo.
-   // Không áp dụng cho gói khuyến mãi hoặc mục gia hạn thêm giờ.
+   // Ngày đầu tính 22 giờ; mỗi ngày tiếp theo tính 24 giờ.
+   // Phần dư <6h: tính theo giờ (CS1+2: 30.000đ/h; CS3: 50.000đ/h).
+   // Phần dư 6–12h: tính giá qua đêm; phần dư >12h: tính giá ngày đêm.
    const hoursAfterFirstDay=Math.max(0,hours-22);
    const additionalFullDays=Math.floor(hoursAfterFirstDay/24);
    const remainderHours=hoursAfterFirstDay-(additionalFullDays*24);
-   const billableDays=1+additionalFullDays;
-   base=billableDays*price.day;
-   if(remainderHours>0 && remainderHours<6){
-     extra=remainderHours*price.over;
-   } else if(remainderHours>=6 && remainderHours<=12){
-     extra=price.night;
-   } else if(remainderHours>12){
-     // Phần dư trên 12 giờ và nhỏ hơn 24 giờ được tính giá ngày đêm.
-     extra=price.day;
+   base=(1+additionalFullDays)*price.day;
+   if(remainderHours>0){
+     const remainderStart=new Date(start.getTime()+(22+additionalFullDays*24)*3600000);
+     const remainderEnd=new Date(remainderStart.getTime()+remainderHours*3600000);
+     const remainderClass=classifyRemainder(remainderStart,remainderEnd,remainderHours);
+     if(remainderClass==='night')extra=price.night;
+     else if(remainderClass==='hourly')extra=remainderHours*price.over;
+     else extra=price.day;
    }
  }
  if(kind==='Qua đêm'){
