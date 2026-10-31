@@ -139,7 +139,7 @@
     <summary>🎁 Chính sách ưu đãi theo tháng <span>Áp dụng cả 3 cơ sở</span></summary>
     <div class="promo-policy-grid">
       <section class="promo-policy-month"><h4>T10 <small>05–31/10</small></h4><div class="promo-policy-line"><b>T2–T5</b><strong class="promo-discount">−15%</strong></div><div class="promo-policy-line"><b>T6–T7</b><strong>Đúng giá* </strong></div><div class="promo-policy-line"><b>CN</b><strong class="promo-discount">−10%</strong></div><p class="promo-footnote">* Giảm tối đa không quá 5%</p></section>
-      <section class="promo-policy-month"><h4>T11 <small>01–30/11</small></h4><div class="promo-policy-line"><b>T2–T5</b><strong class="promo-discount">−10%</strong></div><div class="promo-policy-line"><b>T6–CN</b><strong>Đúng giá</strong></div></section>
+      <section class="promo-policy-month"><h4>T11 <small>01–30/11</small></h4><div class="promo-policy-line"><b>T2–T5</b><strong class="promo-discount">−15%</strong></div><div class="promo-policy-line"><b>T6–T7</b><strong>Đúng giá</strong></div><div class="promo-policy-line"><b>CN</b><strong class="promo-discount">−10%</strong></div></section>
       <section class="promo-policy-month"><h4>T12 <small>01–31/12</small></h4><div class="promo-policy-line"><b>T2–T5</b><strong class="promo-discount">−10%</strong></div><div class="promo-policy-line"><b>T6–CN</b><strong>Đúng giá</strong></div></section>
     </div>
   </details>
@@ -192,7 +192,7 @@
 <div class="btnrow"><button class="btn" id="downloadExtension">Tải phiếu gia hạn gửi khách</button></div><div aria-live="polite" class="status" id="extensionStatus"></div>
 <div class="rule-guide" id="pricingRules">
   <div class="rule-guide-head"><span class="rule-guide-icon">📘</span><div><h3>RULE – QUY TẮC TÍNH GIÁ</h3><p>Hướng dẫn áp dụng cho Cơ sở 1, 2 và 3</p></div></div>
-  <div class="rule-guide-content">
+  <div class="rule-guide-content"><article class="rule-card"><h4>Chính sách ưu đãi tháng 11 – Áp dụng cả 3 cơ sở</h4><p><b>Thứ 2, 3, 4, 5:</b> Giảm 15%. <b>Thứ 6, 7:</b> Đúng giá (không giảm). <b>Chủ nhật:</b> Giảm 10%.</p><p>Ưu đãi tự động theo ngày của từng mốc tính phí qua đêm/ngày đêm. Giá theo tiếng và tiền giờ lẻ không áp dụng giảm; gói giá ưu đãi riêng giữ nguyên quy tắc hiện có.</p></article>
     <article class="rule-card">
       <h4>1. Tính tiền theo ngày – khách đặt dài ngày</h4>
       <p>Áp dụng cho cả Cơ sở 1, Cơ sở 2 và Cơ sở 3.</p>
@@ -272,7 +272,7 @@ function calculate(){
  const site=$('site').value,type=$('type').value,price=rates[site][type];let kind,base=0,extra=0,discount=0;
  const selectedPromo=document.querySelector('input[name="promoNight"]:checked')?.value||'0';
  const promoPrice=selectedPromo==='custom'?Math.max(0,Number($('promoCustomPrice').value)||0):Number(selectedPromo)||0;
- const rateForDate=date=>{const weekday=date.getDay(),month=date.getMonth();if(month===10||month===11)return (weekday>=1&&weekday<=4)?10:0;return (weekday>=1&&weekday<=4)?15:(weekday===5||weekday===6)?5:10;};
+ const rateForDate=date=>{const weekday=date.getDay(),month=date.getMonth();if(month===10)return (weekday>=1&&weekday<=4)?15:(weekday===0?10:0);if(month===11)return (weekday>=1&&weekday<=4)?10:0;return (weekday>=1&&weekday<=4)?15:(weekday===5||weekday===6)?5:10;};
  // Khoảng thời gian được tính giá qua đêm:
  // (1) cùng ngày, nằm trọn trong 06:00–21:00;
  // (2) từ 21:00 trở đi đến 10:00 ngày hôm sau.
@@ -655,11 +655,11 @@ $('downloadNote').addEventListener('click',()=>{
  if(!Number.isFinite(hours)||hours<=0){$('copystatus').textContent='Vui lòng kiểm tra lại Check-in và Check-out.';return;}
  const customer=($('customerName').value||'').trim();
  const site=$('site').value, price=(rates[site]||{})[$('type').value]||{};
- const fmtDate=d=>d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'});
+ const fmtDate=d=>String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0');
  const fmtTime=d=>d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',hour12:false});
  const fmtMoney=n=>Math.round(n).toLocaleString('vi-VN')+'đ';
  const weekdayName=d=>['Chủ Nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'][d.getDay()];
- const rateForDate=d=>{const w=d.getDay(),month=d.getMonth();if(month===10||month===11)return (w>=1&&w<=4)?10:0;return (w>=1&&w<=4)?15:((w===5||w===6)?5:10);};
+ const rateForDate=d=>{const w=d.getDay(),month=d.getMonth();if(month===10)return (w>=1&&w<=4)?15:(w===0?10:0);if(month===11)return (w>=1&&w<=4)?10:0;return (w>=1&&w<=4)?15:((w===5||w===6)?5:10);};
  const segments=[];let segStart=new Date(start), index=1;
  const calendarDays=Math.floor((new Date(end.getFullYear(),end.getMonth(),end.getDate())-new Date(start.getFullYear(),start.getMonth(),start.getDate()))/864e5);
  const fullCalendarMonths=calendarMonthCount(start,end);
@@ -693,10 +693,8 @@ $('downloadNote').addEventListener('click',()=>{
  const totalDiscount=Math.floor(rawDiscount/1000)*1000;
  const finalTotal=Math.max(0,totalFee-totalDiscount+(Number($('manual').value)||0));
  const lines=[];
- lines.push('Tên khách: '+(customer||'—'));
- lines.push('Số điện thoại: '+(($('customerPhone').value||'').trim()||'—'));
- lines.push('Tiền khách đã cọc: '+fmtMoney(Number($('depositAmount').value||0)));
- lines.push('Còn phải thanh toán: '+fmtMoney(Math.max(0,finalTotal-Number($('depositAmount').value||0))));
+ if(segments.some(seg=>seg.start.getMonth()===10)){lines.push('CHÍNH SÁCH ƯU ĐÃI T11 – ÁP DỤNG CẢ 3 CƠ SỞ');lines.push('T2–T5: Giảm 15% | T6–T7: Đúng giá | CN: Giảm 10%');lines.push('');}
+ lines.push('Tên Khách: '+customer);
  lines.push('Check-in: '+fmtTime(start)+' '+fmtDate(start));
  lines.push('Check-out: '+fmtTime(end)+' '+fmtDate(end));
  lines.push('');
@@ -723,7 +721,6 @@ $('downloadNote').addEventListener('click',()=>{
  lines.push('');
  lines.push('Tổng giá: '+fmtMoney(totalFee));
  lines.push('Ưu đãi (làm tròn xuống 1.000đ): -'+fmtMoney(totalDiscount));
- if(Number($('manual').value)||0)lines.push('Điều chỉnh: '+fmtMoney(Number($('manual').value)||0));
  lines.push('Thành tiền: '+fmtMoney(finalTotal));
  const blob=new Blob(['\ufeff',lines.join('\n')],{type:'text/plain;charset=utf-8'});
  const url=URL.createObjectURL(blob),a=document.createElement('a');
@@ -750,7 +747,7 @@ function updateExtension(){
  const roomType=(roomMap[site]||{})[room], roomRate=(rates[site]||{})[roomType];
  // Mức giảm căn cứ theo ngày check-in của lần gia hạn; chỉ áp dụng cho giá qua đêm/ngày đêm.
  const weekday=start.getDay();
- const discountRate=(weekday>=1&&weekday<=4)?0.15:(weekday===5||weekday===6)?0.05:0.10;
+ const discountRate=start.getMonth()===10?((weekday>=1&&weekday<=4)?0.15:(weekday===0?0.10:0)):((weekday>=1&&weekday<=4)?0.15:(weekday===5||weekday===6)?0.05:0.10);
  const discountLabel=Math.round(discountRate*100)+'%';
  const discountAmountFor=amount=>Math.ceil((amount*discountRate)/1000)*1000; // Làm tròn tiền giảm lên bội số 1.000đ
  let fee=0, pricingType='', dayCount=0, dayRate=roomRate?roomRate.day:0, extraHours=0, extraType='', extraFee=0;
