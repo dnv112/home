@@ -704,6 +704,7 @@ $('downloadNote').addEventListener('click',()=>{
    lines.push('T2–T5: Giảm 15% | T6–T7: Đúng giá | CN: Giảm 10%');lines.push('');
  }
  lines.push('Tên Khách: '+customer);
+ lines.push('Hạng Phòng: '+($('type').value||'—'));
  lines.push('Check-in: '+fmtTime(start)+' '+fmtDate(start));
  lines.push('Check-out: '+fmtTime(end)+' '+fmtDate(end));lines.push('');
  segments.forEach((seg,i)=>{
