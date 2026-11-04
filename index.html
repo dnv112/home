@@ -150,7 +150,7 @@ html{color-scheme:light}body{margin:0;background:var(--bg);color:var(--text);fon
     <summary>🎁 Chính sách ưu đãi theo tháng <span>Áp dụng cả 3 cơ sở</span></summary>
     <div class="promo-policy-grid">
       <section class="promo-policy-month"><h4>T10 <small>05–31/10</small></h4><div class="promo-policy-line"><b>T2–T5</b><strong class="promo-discount">−15%</strong></div><div class="promo-policy-line"><b>T6–T7</b><strong>Đúng giá* </strong></div><div class="promo-policy-line"><b>CN</b><strong class="promo-discount">−10%</strong></div><p class="promo-footnote">* Giảm tối đa không quá 5%</p></section>
-      <section class="promo-policy-month"><h4>T11 <small>01–30/11</small></h4><div class="promo-policy-line"><b>T2–T5</b><strong class="promo-discount">−15%</strong></div><div class="promo-policy-line"><b>T6–T7</b><strong>Đúng giá</strong></div><div class="promo-policy-line"><b>CN</b><strong class="promo-discount">−10%</strong></div></section>
+      <section class="promo-policy-month"><h4>T11 <small>01–30/11/2026</small></h4><div class="promo-policy-line"><b>T2–T5 &amp; CN</b><strong class="promo-discount">−20%</strong></div><div class="promo-policy-line"><b>T6–T7</b><strong class="promo-discount">−10%</strong></div></section>
       <section class="promo-policy-month"><h4>T12 <small>01–31/12</small></h4><div class="promo-policy-line"><b>T2–T5</b><strong class="promo-discount">−10%</strong></div><div class="promo-policy-line"><b>T6–CN</b><strong>Đúng giá</strong></div></section>
     </div>
   </details>
@@ -241,7 +241,7 @@ html{color-scheme:light}body{margin:0;background:var(--bg);color:var(--text);fon
       <p><b>Lưu ý:</b> Nếu khách thuê 3–5 giờ muốn check-in từ 07:00 sáng và phòng đêm trước đã có khách check-out lúc 06:00, có thể tính theo giá tiếng.</p>
     </article>
 <article class="rule-card"><h4>4. Trường hợp áp dụng giá sale</h4><p>Trường hợp cơ sở có thông báo giá sale: áp dụng phụ thu 50.000đ/giờ từ 10:00 đến tối đa 12:00 trưa hôm sau. Chỉ áp dụng cho cơ sở và ngày có thông báo giá sale; trả phòng sau 12:00 tính lại theo giá thường.</p></article>
-<article class="rule-card"><h4>5. Chính sách ưu đãi tháng 11 – Áp dụng cả 3 cơ sở</h4><p><b>Thứ 2, 3, 4, 5:</b> Giảm 15%. <b>Thứ 6, 7:</b> Đúng giá (không giảm). <b>Chủ nhật:</b> Giảm 10%.</p><p>Ưu đãi tự động theo ngày của từng mốc tính phí qua đêm/ngày đêm. Giá theo tiếng và tiền giờ lẻ không áp dụng giảm; gói giá ưu đãi riêng giữ nguyên quy tắc hiện có.</p></article>
+<article class="rule-card"><h4>5. Chính sách ưu đãi tháng 11 – Áp dụng cả 3 cơ sở</h4><p><b>Thứ 2, 3, 4, 5 và Chủ nhật:</b> Giảm 20%. <b>Thứ 6, 7:</b> Giảm 10%. Áp dụng cho tất cả các tuần từ <b>01/11 đến hết 30/11/2026</b>, tại cả 3 cơ sở.</p><p>Ưu đãi tự động theo ngày của từng mốc tính phí qua đêm/ngày đêm. Giá theo tiếng và tiền giờ lẻ không áp dụng giảm; gói giá ưu đãi riêng giữ nguyên quy tắc hiện có.</p></article>
   </div>
 </div>
 </section>
@@ -303,6 +303,7 @@ async function copyTextWithStatus(text,successMessage){
 }
 function rateForDate(date,mode='booking'){
  const weekday=date.getDay(),month=date.getMonth();
+ if(date.getFullYear()===2026&&month===10)return weekday===5||weekday===6?10:20;
  if(month===10)return weekday>=1&&weekday<=4?15:weekday===0?10:0;
  if(month===11&&mode==='booking')return weekday>=1&&weekday<=4?10:0;
  return weekday>=1&&weekday<=4?15:weekday===0?10:5;
@@ -701,7 +702,8 @@ $('downloadNote').addEventListener('click',()=>{
  const lines=[];
  if(segments.some(seg=>seg.start.getMonth()===10)){
    lines.push('CHÍNH SÁCH ƯU ĐÃI T11 – ÁP DỤNG CẢ 3 CƠ SỞ');
-   lines.push('T2–T5: Giảm 15% | T6–T7: Đúng giá | CN: Giảm 10%');lines.push('');
+   lines.push('T2–T5 & CN: Giảm 20% | T6–T7: Giảm 10%');
+   lines.push('Thời gian áp dụng: 01/11–30/11/2026');lines.push('');
  }
  lines.push('Tên Khách: '+customer);
  lines.push('Hạng Phòng: '+($('type').value||'—'));
