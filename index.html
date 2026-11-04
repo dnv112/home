@@ -145,7 +145,7 @@ html{color-scheme:light}body{margin:0;background:var(--bg);color:var(--text);fon
 <div class="field early-night-option"><label class="early-night-card" for="priorNightOccupied"><span class="early-night-icon" aria-hidden="true"><svg class="booking-ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></svg></span><span class="early-night-copy"><strong>Báo đêm trước có khách</strong><small>Nếu khách nhận phòng trước 08:00 và thuê 3–5 giờ, tích chọn để áp dụng giá theo tiếng.</small></span><span class="early-night-toggle"><input id="priorNightOccupied" type="checkbox"/><span class="early-night-switch" aria-hidden="true"></span></span></label></div>
 <div class="field"><label class="promo-label"><svg class="booking-ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="18" height="12" rx="1"/><path d="M12 9v12M3 13h18M12 9H7a3 3 0 1 1 3-3c0 2 2 3 2 3Zm0 0h5a3 3 0 1 0-3-3c0 2-2 3-2 3Z"/></svg><span>Chọn Khuyến Mãi</span></label><div class="promo-options promo-options-custom"><label class="promo-choice"><input checked="" name="promoNight" type="radio" value="0"/> <span>Không áp dụng</span></label><label class="promo-choice promo-custom-choice"><input name="promoNight" type="radio" value="custom"/> <span>Ưu Đãi</span></label></div><div class="field promo-price-field"><label for="promoCustomPrice">Mức giá ưu đãi</label><select aria-label="Giá trị ưu đãi" class="promo-custom-price" id="promoCustomPrice"><option value="300000">300.000đ</option><option value="350000">350.000đ</option><option value="400000">400.000đ</option><option value="450000">450.000đ</option></select></div></div>
 <div class="promo-policy-note" aria-label="Tóm tắt hướng dẫn và chính sách ưu đãi">
-  <div class="promo-policy-intro"><strong>ℹ️ Cách áp dụng giá Ưu Đãi</strong><p>Chọn <b>Ưu Đãi</b> và mức giá sale. Giá gói áp dụng đến 10:00 hôm sau; 10:00–12:00 phụ thu 50.000đ/giờ. Check-out sau 12:00: hủy giá sale, tính theo công thức thường từ giờ check-in.</p><p><b>Lưu ý giá sale:</b> Trường hợp cơ sở có thông báo giá sale: áp dụng phụ thu 50.000đ/giờ từ 10:00 đến tối đa 12:00 trưa hôm sau. Chỉ áp dụng cho cơ sở và ngày có thông báo giá sale; trả phòng sau 12:00 tính lại theo giá thường.</p></div>
+  <div class="promo-policy-intro"><strong>ℹ️ Cách áp dụng giá Ưu Đãi</strong><p>Chọn <b>Ưu Đãi</b> và mức giá sale. Giá gói SALE áp dụng từ check-in đến 10:00 hôm sau. Nếu trả phòng từ 10:00 đến 12:00: phụ thu 50.000đ/giờ. Nếu ở tiếp sau 12:00: giữ gói SALE đầu tiên, tính riêng phần từ 10:00 hôm sau. Phần ở thêm ngay sau gói SALE dưới 6 giờ tính × 50.000đ/giờ cho cả 3 cơ sở, không giảm thêm phần trăm; 6–12 giờ phân loại qua đêm/ngày đêm theo khung giờ; trên 12 giờ áp dụng chu kỳ 22 giờ đầu, sau đó mỗi 24 giờ.</p><p><b>Lưu ý giá sale:</b> Chỉ áp dụng gói SALE khi cơ sở và ngày nhận phòng có thông báo giá SALE; chọn “Ưu Đãi” và đúng mức giá của cơ sở. Gói đầu tính đến 10:00 hôm sau, không giảm thêm phần trăm. Trả từ 10:00 đến 12:00: phụ thu 50.000đ/giờ. Khách ở tiếp sau 12:00: giữ gói SALE đầu tiên và tính riêng phần từ 10:00 hôm sau. Phần ở thêm ngay sau gói SALE dưới 6 giờ tính × 50.000đ/giờ cho cả 3 cơ sở, không giảm thêm phần trăm; 6–12 giờ phân loại theo khung qua đêm/ngày đêm; trên 12 giờ bắt đầu chu kỳ 22 giờ đầu + mỗi ngày tiếp theo 24 giờ. Không cộng chồng phụ thu SALE 50.000đ/giờ vào phần này.</p></div>
   <details class="promo-policy-details">
     <summary>🎁 Chính sách ưu đãi theo tháng <span>Áp dụng cả 3 cơ sở</span></summary>
     <div class="promo-policy-grid">
@@ -240,7 +240,7 @@ html{color-scheme:light}body{margin:0;background:var(--bg);color:var(--text);fon
       </ul>
       <p><b>Lưu ý:</b> Nếu khách thuê 3–5 giờ muốn check-in từ 07:00 sáng và phòng đêm trước đã có khách check-out lúc 06:00, có thể tính theo giá tiếng.</p>
     </article>
-<article class="rule-card"><h4>4. Trường hợp áp dụng giá sale</h4><p>Trường hợp cơ sở có thông báo giá sale: áp dụng phụ thu 50.000đ/giờ từ 10:00 đến tối đa 12:00 trưa hôm sau. Chỉ áp dụng cho cơ sở và ngày có thông báo giá sale; trả phòng sau 12:00 tính lại theo giá thường.</p></article>
+<article class="rule-card"><h4>4. Trường hợp áp dụng giá sale</h4><p><b>Trường hợp 1 – Không chọn giá SALE:</b> Ngày đầu 22 giờ, mỗi ngày tiếp theo 24 giờ. Ví dụ nhận 23:00: ngày 1 đến 21:00 hôm sau; ngày 2 từ 21:00 đến 21:00; ngày cuối từ 21:00 đến 10:00 hôm sau tính qua đêm. Nếu ngày cuối không nằm trong khung qua đêm, tính theo phân loại giờ dư của công thức thường.</p><p><b>Trường hợp 2 – Chọn giá SALE ngày nhận phòng:</b> Ví dụ nhận 19:00: gói đầu đến 10:00 hôm sau tính đúng giá SALE đã chọn (300.000đ hoặc 400.000đ theo thông báo cơ sở). Ngày tiếp theo từ 10:00 đến 08:00 hôm sau (22 giờ) tính ngày đêm; sau đó từng mốc 08:00–08:00 (24 giờ) tính ngày đêm. Phần cuối phân loại theo khung qua đêm/giờ dư tương ứng. Ưu đãi phần trăm chỉ áp dụng phần giá thường, theo ngày bắt đầu mỗi mốc.</p><p>Chỉ áp dụng gói SALE khi cơ sở và ngày nhận phòng có thông báo giá SALE; chọn “Ưu Đãi” và đúng mức giá của cơ sở. Gói đầu tính đến 10:00 hôm sau, không giảm thêm phần trăm. Trả từ 10:00 đến 12:00: phụ thu 50.000đ/giờ. Khách ở tiếp sau 12:00: giữ gói SALE đầu tiên và tính riêng phần từ 10:00 hôm sau. Phần ở thêm ngay sau gói SALE dưới 6 giờ tính × 50.000đ/giờ cho cả 3 cơ sở, không giảm thêm phần trăm; 6–12 giờ phân loại theo khung qua đêm/ngày đêm; trên 12 giờ bắt đầu chu kỳ 22 giờ đầu + mỗi ngày tiếp theo 24 giờ. Không cộng chồng phụ thu SALE 50.000đ/giờ vào phần này.</p></article>
 <article class="rule-card"><h4>5. Chính sách ưu đãi tháng 11 – Áp dụng cả 3 cơ sở</h4><p><b>Thứ 2, 3, 4, 5 và Chủ nhật:</b> Giảm 20%. <b>Thứ 6, 7:</b> Giảm 10%. Áp dụng cho tất cả các tuần từ <b>01/11 đến hết 30/11/2026</b>, tại cả 3 cơ sở.</p><p>Ưu đãi tự động theo ngày của từng mốc tính phí qua đêm/ngày đêm. Giá theo tiếng và tiền giờ lẻ không áp dụng giảm; gói giá ưu đãi riêng giữ nguyên quy tắc hiện có.</p></article>
   </div>
 </div>
@@ -355,7 +355,49 @@ function calculate(){
  // Thuê trọn tháng lịch: vẫn nhận diện theo tháng lịch (28/29/30/31 ngày),
  // nhưng tiền thuê áp dụng công thức dài ngày: 22 giờ đầu + 24 giờ mỗi ngày tiếp theo.
  const fullCalendarMonths=calendarMonthCount(start,end);
- if(fullCalendarMonths>0){
+ if(promoPrice>0 && end>saleCutoff){
+   // Gói SALE chỉ tính lần đầu đến 10:00 hôm sau; phần sau bắt đầu lại chu kỳ 22h + 24h.
+   kind='SALE + Ngày đêm';
+   const regularStart=new Date(start.getFullYear(),start.getMonth(),start.getDate()+1,10,0,0,0);
+   recordCharge(start,regularStart,promoPrice,0,0,'Giá SALE');
+   const regularHours=(end-regularStart)/3600000;
+   const dailyRates=[];
+   base=promoPrice;
+   if(regularHours<6){
+     // Giờ dư ngắn sau gói SALE không được tính thành một ngày đêm.
+     kind='SALE + Giờ dư';extra=regularHours*50000;
+     recordCharge(regularStart,end,extra,0,0,'Giờ dư');
+   }else if(regularHours<=12){
+     const remainderClass=classifyRemainder(regularStart,end,regularHours);
+     const night=remainderClass==='night';extra=night?price.night:price.day;
+     const pct=rateForDate(regularStart),saved=extra*pct/100;
+     kind=night?'SALE + Qua đêm':'SALE + Ngày đêm';discount=saved;dailyRates.push(pct);
+     recordCharge(regularStart,end,extra,pct,saved,night?'Qua đêm':'Ngày đêm');
+   }else{
+   const fullDays=1+Math.floor(Math.max(0,regularHours-22)/24);
+   const remainderHours=Math.max(0,regularHours-22)%24;
+   base=promoPrice+fullDays*price.day;
+   let cursor=new Date(regularStart);
+   for(let i=0;i<fullDays;i++){
+     const segmentEnd=new Date(Math.min(end.getTime(),cursor.getTime()+(i===0?22:24)*3600000));
+     const pct=rateForDate(cursor),saved=price.day*pct/100;
+     discount+=saved;dailyRates.push(pct);recordCharge(cursor,segmentEnd,price.day,pct,saved,'Ngày đêm');
+     cursor=segmentEnd;
+   }
+   if(remainderHours>0){
+     const remainderClass=classifyRemainder(cursor,end,remainderHours);
+     if(remainderClass==='hourly'){
+       extra=remainderHours*price.over;recordCharge(cursor,end,extra,0,0,'Giờ dư');
+     }else{
+       extra=remainderClass==='night'?price.night:price.day;
+       const pct=rateForDate(cursor),saved=extra*pct/100;discount+=saved;dailyRates.push(pct);
+       recordCharge(cursor,end,extra,pct,saved,remainderClass==='night'?'Qua đêm':'Ngày đêm');
+     }
+   }
+
+   }
+   $('discount').value=dailyRates.length?'Gói SALE không giảm thêm · '+[...new Set(dailyRates)].map(p=>p+'%').join(' + ')+' cho phần giá thường':'Gói SALE và giờ dư không giảm thêm';
+ }else if(fullCalendarMonths>0){
    kind=`Thuê ${fullCalendarMonths} tháng lịch (${days} ngày)`;
    const hoursAfterFirstDay=Math.max(0,hours-22);
    const fullDays=1+Math.floor(hoursAfterFirstDay/24);
@@ -384,13 +426,13 @@ function calculate(){
    }
    $('discount').value=[...new Set(dailyRates)].map(p=>p+'%').join(' + ')+' · ưu đãi theo từng mốc tính phí';
  }else if(promoPrice>0 && end<=saleCutoff){
-   // Chỉ áp dụng giá sale nếu khách trả phòng không muộn hơn 12:00 trưa hôm sau.
-   // Giá gói sale bao gồm thời gian đến 10:00 hôm sau; từ 10:00 đến giờ trả,
-   // phụ thu 50.000đ/giờ, tối đa đến 12:00. Nếu quá 12:00, chuyển hẳn sang công thức thường từ giờ check-in.
+   // Khách trả trước hoặc đúng 12:00 hôm sau: giữ gói SALE và phụ thu 50.000đ/giờ sau 10:00.
    kind='Khuyến mãi đến 12:00';base=promoPrice;
    const surchargeStart=new Date(start.getFullYear(),start.getMonth(),start.getDate()+1,10,0,0,0);
    const surchargeHours=Math.max(0,(end-Math.max(start.getTime(),surchargeStart.getTime()))/36e5);
    extra=surchargeHours*50000;
+   recordCharge(start,new Date(Math.min(end.getTime(),surchargeStart.getTime())),promoPrice,0,0,'Giá SALE');
+   if(surchargeHours>0)recordCharge(surchargeStart,end,extra,0,0,'Phụ thu SALE');
    $('discount').value=surchargeHours>0?'Gói KM · phụ thu 50.000đ/giờ':'Gói khuyến mãi';
  }else{
  // Quy ước qua đêm đặc biệt: nhận lúc 21:00 và trả lúc 10:00 ngày hôm sau.
@@ -712,7 +754,7 @@ $('downloadNote').addEventListener('click',()=>{
  segments.forEach((seg,i)=>{
    const h=((seg.end-seg.start)/3600000).toLocaleString('vi-VN',{maximumFractionDigits:2});
    const pct=Number(seg.pct.toFixed(6)).toLocaleString('vi-VN',{maximumFractionDigits:6});
-   lines.push('Ngày '+(i+1)+'('+weekdayName(seg.start)+'): '+fmtTime(seg.start)+' '+fmtDate(seg.start)+' - '+fmtTime(seg.end)+' '+fmtDate(seg.end)+': ('+h+'h) '+fmtMoney(seg.fee)+' - giảm '+pct+'% = '+fmtMoney(seg.fee-seg.discount));
+   lines.push('Ngày '+(i+1)+'('+weekdayName(seg.start)+'): '+fmtTime(seg.start)+' '+fmtDate(seg.start)+' - '+fmtTime(seg.end)+' '+fmtDate(seg.end)+': ('+h+'h) '+(seg.label==='Giá SALE'?'Giá SALE ':seg.label==='Phụ thu SALE'?'Phụ thu SALE ':'')+fmtMoney(seg.fee)+' - giảm '+pct+'% = '+fmtMoney(seg.fee-seg.discount));
  });
  lines.push('');lines.push('Tổng giá: '+fmtMoney(base+extra));
  lines.push('Ưu đãi (làm tròn xuống 1.000đ): -'+fmtMoney(discount));
