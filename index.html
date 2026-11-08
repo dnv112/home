@@ -533,41 +533,31 @@ async function downloadReceipt(){
  button.disabled=true;
  $('copystatus').textContent='Đang tạo phiếu thanh toán…';
  try{
-  const [template,qr]=await loadReceiptAssets();
+  const [,qr]=await loadReceiptAssets();
   if(document.fonts?.ready)await document.fonts.ready;
-  const canvas=document.createElement('canvas');canvas.width=3072;canvas.height=2048;
+  // Landscape receipt: balanced guest details and a large, separate bank QR.
+  const canvas=document.createElement('canvas');canvas.width=3200;canvas.height=2080;
   const ctx=canvas.getContext('2d');
   if(!ctx)throw new Error('Trình duyệt không hỗ trợ xuất ảnh.');
-  // Render text at twice the pixel density for a crisp PNG when enlarged.
   ctx.scale(2,2);
-  ctx.drawImage(template,0,0,1536,1024);
-
-  const ink='#10392b',muted='#2f5140',gold='#c8a55f';
-  // Use the familiar screen sans-serif on each device, without a heavy display font.
+  const ink='#153d33',muted='#486258',line='#dbe5e0',green='#163f35';
   const family='"Segoe UI", Roboto, Helvetica, Arial, sans-serif';
   const round=(x,y,w,h,r,fill,stroke)=>{
-   ctx.beginPath();ctx.roundRect(x,y,w,h,r);
-   ctx.fillStyle=fill;ctx.fill();
+   ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();
    if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();}
   };
-  const text=(str,x,y,size=22,weight=400,color=ink,align='left')=>{
+  const text=(str,x,y,size=26,weight=400,color=ink,align='left')=>{
    ctx.font=`${weight} ${size}px ${family}`;ctx.fillStyle=color;
-   ctx.letterSpacing='0.2px';
-   ctx.textBaseline='alphabetic';ctx.textAlign=align;ctx.fillText(String(str),x,y);
+   ctx.letterSpacing='0.2px';ctx.textBaseline='alphabetic';ctx.textAlign=align;
+   ctx.fillText(String(str),x,y);
   };
-  const rule=(x1,y,x2,color='#e3d9c1')=>{
+  const rule=(x1,y,x2)=>{
    ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);
-   ctx.strokeStyle=color;ctx.lineWidth=1;ctx.stroke();
+   ctx.strokeStyle=line;ctx.lineWidth=1;ctx.stroke();
   };
-  const label=(str,x,y)=>{
-   ctx.save();ctx.letterSpacing='0.6px';
-   ctx.font=`500 16px ${family}`;ctx.fillStyle=muted;
-   ctx.textBaseline='alphabetic';ctx.textAlign='left';ctx.fillText(str,x,y);ctx.restore();
-  };
-  // Room for natural word wrapping; no form-like input fields or tiny names.
-  function value(str,x,y,width,height,size=24,minSize=19,weight=500,maxLines=1,align='left',color=ink){
-   str=String(str).replace(/\s+/g,' ').trim();
-   ctx.letterSpacing='0.2px';
+  const label=(str,x,y)=>text(str,x,y,22,500,muted);
+  function value(str,x,y,width,height,size=30,minSize=22,weight=500,maxLines=1,align='left',color=ink){
+   str=String(str).replace(/\s+/g,' ').trim();ctx.letterSpacing='0.2px';
    const linesAt=fontSize=>{
     ctx.font=`${weight} ${fontSize}px ${family}`;
     let line='',lines=[];
@@ -580,11 +570,10 @@ async function downloadReceipt(){
    };
    let fitted=size,lines=linesAt(fitted);
    while(fitted>minSize&&(lines.length>maxLines||lines.length*fitted*1.4>height||lines.some(v=>ctx.measureText(v).width>width))){fitted--;lines=linesAt(fitted);}
-   lines=lines.slice(0,maxLines);
+   const allLines=lines;lines=lines.slice(0,maxLines);
    lines=lines.map((line,i)=>{
     let cut=line;
-    const needsMore=i===maxLines-1&&linesAt(fitted).length>maxLines;
-    if(needsMore||ctx.measureText(cut).width>width){
+    if((i===maxLines-1&&allLines.length>maxLines)||ctx.measureText(cut).width>width){
      while(cut&&ctx.measureText(cut+'…').width>width)cut=cut.slice(0,-1);
      cut+='…';
     }
@@ -598,49 +587,98 @@ async function downloadReceipt(){
    lines.forEach((line,i)=>ctx.fillText(line,left,y+(height-totalHeight)/2+lineHeight*(i+.5)));
    ctx.restore();
   }
-  // Give labels and values their own space, with normal screen-font weights.
-  // The decorative header, foliage and footer remain from the selected artwork.
-  const paper=ctx.createLinearGradient(60,232,894,622);
-  paper.addColorStop(0,'#fffcf6');paper.addColorStop(1,'#faf6eb');
-  round(60,232,834,390,29,paper);
-  rule(98,328,856);rule(98,416,856);rule(98,506,856);
-  label('KHÁCH HÀNG',98,255);
-  value(snapshot.customer,98,269,412,54,26,19,600,2);
-  label('SỐ ĐIỆN THOẠI',558,255);
-  value(snapshot.phone,558,279,300,34,25,20,500);
-  label('CƠ SỞ',98,351);
-  value(snapshot.site,98,359,412,30,23,20,600);
-  text(snapshot.street,98,407,18,400,muted);
-  label('HẠNG PHÒNG / MÃ PHÒNG',558,351);
-  value(snapshot.type+' · P'+snapshot.room,558,373,300,34,24,19,500);
-  label('SỐ LƯỢNG KHÁCH',98,443);
-  value(snapshot.guests+' người',98,460,412,35,25,20,500);
-  label('LOẠI LƯU TRÚ',558,443);
-  value(snapshot.kind,558,450,300,50,23,17,500,2);
+  ctx.fillStyle='#f3f6f5';ctx.fillRect(0,0,1600,1040);
+  ctx.fillStyle=green;ctx.fillRect(0,0,1600,166);
+  ctx.fillStyle='#d9b56d';ctx.fillRect(0,166,1600,4);
+  ctx.save();ctx.strokeStyle='#e8cf9d';ctx.lineWidth=3;
+  ctx.beginPath();ctx.arc(82,72,19,Math.PI,0);ctx.stroke();
+  for(let i=0;i<7;i++){
+   const angle=Math.PI+i*Math.PI/6;
+   ctx.beginPath();ctx.moveTo(82+Math.cos(angle)*27,72+Math.sin(angle)*27);
+   ctx.lineTo(82+Math.cos(angle)*36,72+Math.sin(angle)*36);ctx.stroke();
+  }
+  ctx.restore();
+  text('SUN HOMESTAY',138,81,40,600,'#ffffff');
+  text('Thoải mái như ở nhà',138,126,24,400,'#e6efea');
+  text('XÁC NHẬN ĐẶT PHÒNG',1544,96,33,500,'#ffffff','right');
+
+  // One consistent line-icon style; labels stay separate from customer values.
+  const icon=(kind,x,y)=>{
+   ctx.save();ctx.translate(x,y);ctx.strokeStyle=ink;ctx.lineWidth=1.8;
+   ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();
+   if(kind==='guest'){
+    ctx.arc(10,6,4,0,Math.PI*2);ctx.moveTo(2,21);ctx.bezierCurveTo(2,11,18,11,18,21);ctx.lineTo(2,21);
+   }else if(kind==='phone'){
+    ctx.moveTo(4,1);ctx.lineTo(9,5);ctx.lineTo(6,9);ctx.bezierCurveTo(8,13,11,16,15,17);
+    ctx.lineTo(18,13);ctx.lineTo(22,18);ctx.bezierCurveTo(21,25,12,22,6,16);ctx.bezierCurveTo(0,10,-1,3,4,1);
+   }else if(kind==='home'){
+    ctx.moveTo(0,10);ctx.lineTo(11,1);ctx.lineTo(22,10);ctx.moveTo(3,8);ctx.lineTo(3,22);ctx.lineTo(19,22);ctx.lineTo(19,8);
+    ctx.moveTo(8,22);ctx.lineTo(8,14);ctx.lineTo(14,14);ctx.lineTo(14,22);
+   }else if(kind==='bed'){
+    ctx.moveTo(1,4);ctx.lineTo(1,23);ctx.moveTo(21,13);ctx.lineTo(21,23);ctx.moveTo(1,18);ctx.lineTo(21,18);
+    ctx.moveTo(1,13);ctx.lineTo(21,13);ctx.lineTo(21,9);ctx.lineTo(9,9);ctx.lineTo(9,13);
+    ctx.moveTo(3,9);ctx.arc(5,9,2,0,Math.PI*2);
+   }else{
+    ctx.roundRect(1,4,21,19,3);ctx.moveTo(6,1);ctx.lineTo(6,7);ctx.moveTo(17,1);ctx.lineTo(17,7);
+    ctx.moveTo(1,11);ctx.lineTo(22,11);ctx.moveTo(7,16);ctx.lineTo(10,19);ctx.lineTo(16,14);
+   }
+   ctx.stroke();ctx.restore();
+  };
+  const fieldLabel=(str,kind,x,y)=>{
+   icon(kind,x,y-19);text(str,x+36,y,20,500,muted);
+  };
+
+  round(56,200,900,346,24,'#ffffff',line);
+  fieldLabel('Tên khách hàng','guest',88,240);
+  value(snapshot.customer,88,256,404,65,30,22,600,2);
+  fieldLabel('Số điện thoại','phone',536,240);
+  value(snapshot.phone,536,268,388,42,28,23,500);
+  rule(88,334,924);
+  round(80,352,416,114,16,'#f0f5f2');
+  round(516,352,416,114,16,'#f0f5f2');
+  fieldLabel('Cơ sở','home',100,382);
+  value(snapshot.site,100,392,376,39,26,22,600);
+  text(snapshot.street,100,453,20,400,muted);
+  fieldLabel('Hạng phòng / Mã phòng','bed',536,382);
+  value(snapshot.type+' · P'+snapshot.room,536,403,376,45,28,22,600);
+  text('Số lượng khách',100,516,20,400,muted);
+  value(snapshot.guests+' người',278,490,198,43,25,21,500,1,'right');
+  text('Loại lưu trú',536,516,20,400,muted);
+  value(snapshot.kind,702,484,210,55,25,19,500,2,'right');
+
+  // Matching date cards make the stay period easy to compare at a glance.
+  round(56,564,438,132,20,'#ffffff',line);
+  round(518,564,438,132,20,'#ffffff',line);
   const time=d=>d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',hour12:false});
   const date=d=>d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
-  label('CHECK-IN',98,533);label('CHECK-OUT',558,533);
-  value(time(snapshot.start),98,549,412,39,28,24,600);
-  value(time(snapshot.end),558,549,300,39,28,24,600);
-  text(date(snapshot.start),98,607,20,400,muted);
-  text(date(snapshot.end),558,607,20,400,muted);
-  // Display the calculated final total as one clean line on the receipt.
-  ctx.save();ctx.shadowColor='#173b2414';ctx.shadowBlur=6;ctx.shadowOffsetY=2;
-  round(58,644,838,90,24,'#143f32','#c8a55f');ctx.restore();
-  value('Tổng thanh toán',98,656,360,66,25,22,500,1,'left','#fffdf7');
-  value(snapshot.total.replace(/\s*₫$/,' đồng'),482,656,374,66,36,26,600,1,'right','#fffdf7');
-  // Keep the original scannable QR, centered in a quiet white frame.
-  ctx.drawImage(template,954,212,526,10,954,212,526,74);
-  round(954,230,526,504,26,'#fbf8f2','#e4dcca');
-  text('THÔNG TIN THANH TOÁN',1217,268,24,600,ink,'center');
-  rule(1168,284,1266,gold);
-  round(1063,300,308,308,15,'#ffffff','#e8e4da');
-  ctx.imageSmoothingEnabled=false;ctx.drawImage(qr,1087,324,260,260);
-  ctx.imageSmoothingEnabled=true;
-  text('MB BANK',1217,636,20,600,ink,'center');
-  text('HỘ KINH DOANH SUNHOMESTAY',1217,664,20,400,ink,'center');
-  text('5919998888',1217,697,30,600,ink,'center');
-  text('Nội dung: Họ tên + SĐT',1217,724,18,400,muted,'center');
+  fieldLabel('CHECK-IN','calendar',88,601);fieldLabel('CHECK-OUT','calendar',550,601);
+  value(time(snapshot.start),88,612,374,43,34,28,600);
+  value(time(snapshot.end),550,612,374,43,34,28,600);
+  text(date(snapshot.start),88,678,22,400,muted);
+  text(date(snapshot.end),550,678,22,400,muted);
+
+  round(56,714,900,92,20,green);
+  value('Tổng thanh toán',88,731,330,58,28,25,500,1,'left','#ffffff');
+  value(snapshot.total.replace(/\s*₫$/,' đồng'),440,724,484,72,44,29,600,1,'right','#ffffff');
+
+  // The QR has a larger dedicated column, with an untouched white quiet zone.
+  round(980,200,564,606,24,'#ffffff',line);
+  text('THÔNG TIN THANH TOÁN',1262,241,25,600,ink,'center');
+  round(1066,262,392,392,18,'#ffffff',line);
+  ctx.imageSmoothingEnabled=false;ctx.drawImage(qr,1082,278,360,360);ctx.imageSmoothingEnabled=true;
+  text('MB BANK',1262,690,24,600,ink,'center');
+  value('HỘ KINH DOANH SUNHOMESTAY',1008,700,508,38,22,18,500,1,'center');
+  text('5919998888',1262,758,34,600,ink,'center');
+  text('Nội dung: Họ tên + SĐT',1262,789,20,400,muted,'center');
+
+  round(56,828,624,128,20,'#e8f0ec');
+  text('THỦ TỤC CHECK-IN',80,862,21,600);
+  value('Vui lòng gửi họ tên, số điện thoại và ảnh căn cước công dân 2 mặt.',80,876,576,64,21,19,400,2);
+  round(704,828,840,128,20,'#fbf1de');
+  text('LƯU Ý VỀ TIỀN CỌC',728,862,21,600,'#694817');
+  value('Sau khi đặt cọc, nếu khách bận hoặc không đến check-in, khoản cọc sẽ không được hoàn lại. Sun Homestay hiện chưa áp dụng chính sách hoàn cọc trong trường hợp này.',728,876,792,64,20,18,400,3,'left','#573f1d');
+  text('Hotline / Zalo: 0975.758.403',56,1002,25,600);
+  text('Cảm ơn bạn đã lựa chọn Sun Homestay',1544,1002,22,400,muted,'right');
   const link=document.createElement('a');
   const safeName=snapshot.customer.replace(/[\\/:*?"<>|]/g,'-').replace(/\s+/g,' ').slice(0,80);
   link.download=(safeName&&safeName!=='—'?safeName+' - Sun Homestay':'Sun-Homestay-thong-tin-dat-phong')+'.png';
