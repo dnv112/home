@@ -787,11 +787,15 @@ $('copyCloseForm').addEventListener('click',async()=>{
  };
  const deposit=readMoneyInput('depositAmount',0);
  if(deposit===null){$('copystatus').textContent='Tiền cọc phải là số tiền hợp lệ, không âm.';return;}
+ const total=Math.round(currentPricingResult.total);
+ const depositText=deposit===total
+  ?`Đã tt đủ ${total.toLocaleString('vi-VN')}đ`
+  :`${deposit.toLocaleString('vi-VN')}đ ( Check-in xong tt đủ ${$('total').textContent==='—'?'—':$('total').textContent.replace(/\s*₫$/, 'đ')})`;
  const txt=[
   `💦 From Chốt Sunhomestay - ${siteNames[site]||'Tên Cơ Sở'}`,
   `👬  Tên Khách : ${$('customerName').value.trim()||'—'}`,
   `☎ SĐT : ${$('customerPhone').value.trim()||'—'}`,
-  `💍 Khách Cọc : ${deposit.toLocaleString('vi-VN')}đ ( Check-in xong tt đủ ${$('total').textContent==='—'?'—':$('total').textContent.replace(/\s*₫$/, 'đ')})`,
+  `💍 Khách Cọc : ${depositText}`,
   `/-li Ngày Checkin : ${fmtDateTime($('checkin').value)}`,
   `/-li Ngày Checkout : ${fmtDateTime($('checkout').value)}`,
   `/-li Mã Phòng : ${$('room').value?('P'+$('room').value):'—'}`,
