@@ -762,7 +762,7 @@ $('copySiteMap').addEventListener('click',async()=>{
 $('copyCheckinGuide').addEventListener('click',async()=>{
  const site=$('site').value, room='P'+$('room').value;
  let lines=[];
- const commonRules='4️⃣ Sau Khi CHECK OUT Quý Khách Vui Lòng Tắt Hết Thiết Bị Điện Trong Nhà & Cất Lại Chìa Khóa Phòng Vào Chỗ Cũ\n5️⃣ CẤM SỬ DỤNG CHẤT CẤM, SAU 21H : KHÔNG làm ồn, KHÔNG hát hò, gây mất trật tự, ..... Phát hiện mời RA KHỎI HOME';
+ const commonRules='4️⃣ Sau Khi CHECK OUT Quý Khách Vui Lòng Tắt Hết Thiết Bị Điện Trong Nhà & Cất Lại Chìa Khóa Phòng Vào Chỗ Cũ\n5️⃣ CẤM SỬ DỤNG CHẤT CẤM, SAU 21H : KHÔNG làm ồn, KHÔNG hát hò, gây mất trật tự, ..... Phát hiện mời RA KHỎI HOME\n6️⃣ KHÔNG HÚT THUỐC VÀ SỬ DỤNG CHẤT KÍCH THÍCH TRONG PHÒNG. (Không vứt tàn thuốc sang mái nhà hàng xóm.)';
  if(site==='ndh'){
   lines=[ 'Cơ Sở 1: Nguyễn Đình Hoàn',`HƯỚNG DẪN KHI CHECK IN & CHECK OUT PHÒNG : ${room}`,'1️⃣ Mật Khẩu Cổng Chính : 543789#','2️⃣ Mật Khẩu Để Lấy Khóa Phòng : 0000','3️⃣ Mật Khẩu Wifi : 88888888',commonRules ];
  }else if(site==='llq'){
@@ -771,7 +771,7 @@ $('copyCheckinGuide').addEventListener('click',async()=>{
   const roomPasswords={'P201':'147259#','P202':'111202#','P301':'888889#','P302':'111302#','P401':'111401#','P402':'111402#','P501':'123456#','P502':'111502#','P601':'111601#','P602':'111602#','P701':'111701#'};
   const doorPassword=roomPasswords[room];
   if(!doorPassword){$('copystatus').textContent='Chưa có mật khẩu khóa phòng cho mã '+room+'. Vui lòng kiểm tra lại.';return;}
-  lines=[ 'Cơ Sở 3: Đội Cấn',`HƯỚNG DẪN KHI CHECK IN & CHECK OUT PHÒNG : ${room}`,'1️⃣ Mật Khẩu Cổng Chính : 210314#',`2️⃣ Mật Khẩu Khóa Phòng : ${doorPassword}`,'3️⃣ Mật Khẩu Wifi : 23456789','4️⃣ Cách bật Netflix đã có sẵn trong Video','5️⃣ Sau Khi CHECK OUT Quý Khách Vui Lòng Tắt Hết Thiết Bị Điện Trong Nhà','6️⃣ CẤM SỬ DỤNG CHẤT CẤM, SAU 21H : KHÔNG làm ồn, KHÔNG hát hò, gây mất trật tự, ..... Phát hiện mời RA KHỎI HOME'];
+  lines=[ 'Cơ Sở 3: Đội Cấn',`HƯỚNG DẪN KHI CHECK IN & CHECK OUT PHÒNG : ${room}`,'1️⃣ Mật Khẩu Cổng Chính : 210314#',`2️⃣ Mật Khẩu Khóa Phòng : ${doorPassword}`,'3️⃣ Mật Khẩu Wifi : 23456789','4️⃣ Sau Khi CHECK OUT Quý Khách Vui Lòng Tắt Hết Thiết Bị Điện Trong Nhà','5️⃣ CẤM SỬ DỤNG CHẤT CẤM, SAU 21H : KHÔNG làm ồn, KHÔNG hát hò, gây mất trật tự, ..... Phát hiện mời RA KHỎI HOME','6️⃣ KHÔNG HÚT THUỐC VÀ SỬ DỤNG CHẤT KÍCH THÍCH TRONG PHÒNG. (Không vứt tàn thuốc sang mái nhà hàng xóm.)','Cách bật Netflix đã có sẵn trong Video'];
  }
  const txt=lines.join('\n');
  await copyTextWithStatus(txt,'Đã sao chép hướng dẫn check-in cho '+room+'.');
