@@ -292,7 +292,7 @@ function syncPaymentOverview(){
  $('overviewType').textContent=$('type').value||'—';
  $('overviewCheckin').textContent=fmt(ci); $('overviewCheckout').textContent=fmt(co); const actual=$('overviewActualHours'); if(actual){ if(ci&&co){ const start=new Date(ci), end=new Date(co), mins=Math.round((end-start)/60000); if(Number.isFinite(mins)&&mins>0){const h=Math.floor(mins/60), m=mins%60; actual.textContent=m?`${h} giờ ${m} phút`:`${h} giờ`;}else{actual.textContent='Kiểm tra giờ';} }else{actual.textContent='—';} }
 }
-function refreshRooms(){const site=$('site').value;const map=roomMap[site];$('room').innerHTML=Object.keys(map).sort((a,b)=>+a- +b).map(r=>`<option value="${r}">${site==='llq'?r+' - '+map[r].replace(/^PHÒNG\s*/,''):'Phòng '+r}</option>`).join('');calculate();}
+function refreshRooms(){const site=$('site').value;const map=roomMap[site];$('room').innerHTML=Object.keys(map).sort((a,b)=>+a- +b).map(r=>`<option value="${r}">Phòng ${r}</option>`).join('');calculate();}
 function updateType(){$('type').value=roomMap[$('site').value][$('room').value]||'';$('roomTitle').textContent='Phòng '+$('room').value+' · '+$('type').value;syncPaymentOverview();renderRates();}
 function renderRates(){
  const site=$('site').value, available=Object.keys(rates[site]).filter(name=>Object.values(roomMap[site]).includes(name));
@@ -870,7 +870,7 @@ $('downloadNote').addEventListener('click',()=>{
 const now=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Ho_Chi_Minh'}));const localVal=d=>{const pad=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;};
 function refreshExtensionRooms(){
  const site=$('extSite').value, map=roomMap[site]||{};const previous=$('extRoom').value;
- $('extRoom').innerHTML=Object.keys(map).sort((a,b)=>+a- +b).map(r=>`<option value="${r}">${site==='llq'?r+' - '+map[r].replace(/^PHÒNG\s*/,''):'Phòng '+r}</option>`).join('');
+ $('extRoom').innerHTML=Object.keys(map).sort((a,b)=>+a- +b).map(r=>`<option value="${r}">Phòng ${r}</option>`).join('');
  if(map[previous])$('extRoom').value=previous;
  updateExtensionRoomType();updateExtension();
 }
